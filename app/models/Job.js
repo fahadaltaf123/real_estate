@@ -3,21 +3,6 @@ import dotenv from 'dotenv'
 dotenv.config()
 import sequelize from "../../config/connectdb.js"
 
-// const sequelize = new Sequelize(
-//     process.env.DB_DATABASE,
-//     process.env.DB_USERNAME,
-//     process.env.DB_PASSWORD,
-//     {
-//         host: process.env.DB_HOST,
-//         dialect: process.env.DB_CONNECTION
-//     });
-
-// sequelize.authenticate().then(() => {
-//     console.log('Connection has been established successfully.');
-//  }).catch((error) => {
-//     console.error('Unable to connect to the database: ', error);
-//  });
-
 const Job = sequelize.define("jobs", {
     title: {
       type: DataTypes.STRING,
@@ -35,27 +20,27 @@ const Job = sequelize.define("jobs", {
         notEmpty: true,
     },
     noOfVacancies: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: true,
         notEmpty: true,
     },
     experience: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: true,
         notEmpty: true,
     },
     age: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: true,
         notEmpty: true,
     },
     salaryFrom: {
-        type: DataTypes.DATE,
+        type: DataTypes.INTEGER,
         allowNull: true,
         notEmpty: true,
     },
     salaryTo: {
-        type: DataTypes.DATE,
+        type: DataTypes.INTEGER,
         allowNull: true,
         notEmpty: true,
     },
@@ -70,12 +55,12 @@ const Job = sequelize.define("jobs", {
         notEmpty: true,
     },
     startDate: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: true,
         notEmpty: true,
     },
     expiredDate: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: true,
         notEmpty: true,
     },
@@ -92,4 +77,4 @@ sequelize.sync().then(() => {
     console.error('Unable to create table : ', error);
 });
 
-export default Job;
+export default Job
