@@ -7,25 +7,25 @@ dotenv.config()
 
 class JobController {
     static addJob = async (req, res) =>{
-        const {title, department, location, noOfVacancies, experience, age, salaryFrom, salaryTo, jobType, jobStatus, startDate, expiredDate, description} = req.body
-        if (title && department && location && noOfVacancies && experience && age && salaryFrom && salaryTo && jobType && jobStatus && startDate && expiredDate && description) {
+        const {jobtitle, department, location, applicants, experience, age, salaryFrom, salaryTo, jobtype, status, startdate, expirydate, description} = req.body
+        if (jobtitle && department && location && applicants && experience && age && salaryFrom && salaryTo && jobtype && status && startdate && expirydate && description) {
             try {
-                const date1 = new Date(startDate).toISOString();
-                const date2 = new Date(expiredDate).toISOString();
+                const date1 = new Date(startdate).toISOString();
+                const date2 = new Date(expirydate).toISOString();
                 const createJob = new Job({
-                    title: title,
+                    jobtitle: jobtitle,
                     department: department,
                     location: location,
-                    noOfVacancies: noOfVacancies,
+                    applicants: applicants,
                     experience: experience,
                     age: age,
                     salaryFrom: salaryFrom,
                     salaryTo: salaryTo,
-                    jobType: jobType,
-                    jobStatus: jobStatus,
+                    jobtype: jobtype,
+                    status: status,
                     
-                    startDate: date1,
-                    expiredDate: date2,
+                    startdate: date1,
+                    expirydate: date2,
                     description: description,
                 })
                 await createJob.save();

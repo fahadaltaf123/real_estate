@@ -4,7 +4,7 @@ dotenv.config()
 import sequelize from "../../config/connectdb.js"
 
 const Job = sequelize.define("jobs", {
-    title: {
+    jobtitle: {
       type: DataTypes.STRING,
       allowNull: true,
       notEmpty: true,
@@ -19,7 +19,7 @@ const Job = sequelize.define("jobs", {
         allowNull: true,
         notEmpty: true,
     },
-    noOfVacancies: {
+    applicants: {
         type: DataTypes.INTEGER,
         allowNull: true,
         notEmpty: true,
@@ -44,22 +44,22 @@ const Job = sequelize.define("jobs", {
         allowNull: true,
         notEmpty: true,
     },
-    jobType: {
+    jobtype: {
         type: DataTypes.STRING,
         allowNull: true,
         notEmpty: true,
     },
-    jobStatus: {
+    status: {
         type: DataTypes.STRING,
         allowNull: true,
         notEmpty: true,
     },
-    startDate: {
+    startdate: {
         type: DataTypes.DATEONLY,
         allowNull: true,
         notEmpty: true,
     },
-    expiredDate: {
+    expirydate: {
         type: DataTypes.DATEONLY,
         allowNull: true,
         notEmpty: true,
