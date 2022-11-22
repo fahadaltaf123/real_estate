@@ -29,7 +29,7 @@ class UserController {
                         const savedUser = await User.findOne({where: {email:email} })
                         const token = jwt.sign({ userID: savedUser.id }, process.env.JWT_SECRET_KEY, { expiresIn: '2d' })
 
-                        res.status(201).send({
+                        res.status(200).send({
                             "status": "success",
                             "message": "User registered successfully",
                             "token": token

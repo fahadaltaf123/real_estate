@@ -7,8 +7,9 @@ dotenv.config()
 
 class JobController {
     static addJob = async (req, res) =>{
-        const {jobtitle, department, location, applicants, experience, age, salaryFrom, salaryTo, jobtype, status, startdate, expirydate, description} = req.body
-        if (jobtitle && department && location && applicants && experience && age && salaryFrom && salaryTo && jobtype && status && startdate && expirydate && description) {
+        const {isActive,jobtitle, department, location, applicants, experience, age, salaryFrom, salaryTo, jobtype, status, startdate, expirydate, description} = req.body
+       
+        if (jobtitle && department && location && experience && age && salaryFrom && salaryTo && jobtype && status && startdate && expirydate && description) {
             try {
                 const date1 = new Date(startdate).toISOString();
                 const date2 = new Date(expirydate).toISOString();
@@ -23,14 +24,14 @@ class JobController {
                     salaryTo: salaryTo,
                     jobtype: jobtype,
                     status: status,
-                    
+                    isActive: isActive?1:0,
                     startdate: date1,
                     expirydate: date2,
                     description: description,
                 })
                 await createJob.save();
 
-                res.status(201).send({
+                res.status(200).send({
                     "status": "success",
                     "message": "Add Job successfully"
                 })
@@ -50,18 +51,19 @@ class JobController {
     }
 
     static getAllJobs = async (req, res) => {
-        console.log(req.user)
         const allJobs = await Job.findAll();
-        if(allJobs !== null){
+
+        if(allJobs !== null) {
             res.status(200).send({
                 "status": "success",
                 "message": "Get all jobs successfully",
                 "jobs":allJobs
             })
-        }else{
+        } else {
             res.status(200).send({
                 "status": "success",
-                "message": "No Job present"
+                "message": "No Job present",
+                "jobs": []
             })
         }
     }

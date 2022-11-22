@@ -3,26 +3,11 @@ import dotenv from 'dotenv'
 dotenv.config()
 import sequelize from "../../config/connectdb.js"
 
-const Job = sequelize.define("jobs", {
-    jobtitle: {
-      type: DataTypes.STRING,
+const JobCandidate = sequelize.define("job_candidates", {
+    jobId: {
+      type: DataTypes.INTEGER,
       allowNull: true,
       notEmpty: true,
-    },
-    department: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      notEmpty: true,
-    },
-    location: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        notEmpty: true,
-    },
-    applicants: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        notEmpty: true,
     },
     experience: {
         type: DataTypes.INTEGER,
@@ -34,52 +19,47 @@ const Job = sequelize.define("jobs", {
         allowNull: true,
         notEmpty: true,
     },
-    salaryFrom: {
+    currentSalary: {
         type: DataTypes.INTEGER,
         allowNull: true,
         notEmpty: true,
     },
-    salaryTo: {
+    expectedSalary: {
         type: DataTypes.INTEGER,
         allowNull: true,
         notEmpty: true,
     },
-    jobtype: {
+    firstName: {
         type: DataTypes.STRING,
         allowNull: true,
         notEmpty: true,
     },
-    status: {
+    lastName: {
         type: DataTypes.STRING,
         allowNull: true,
         notEmpty: true,
     },
-    isActive: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        notEmpty: true,
-    },
-    startdate: {
-        type: DataTypes.DATEONLY,
-        allowNull: true,
-        notEmpty: true,
-    },
-    expirydate: {
-        type: DataTypes.DATEONLY,
-        allowNull: true,
-        notEmpty: true,
-    },
-    description: {
+    email: {
         type: DataTypes.STRING,
+        allowNull: true,
+        notEmpty: true,
+    },
+    phone: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        notEmpty: true,
+    },
+    coverLetter: {
+        type: DataTypes.TEXT,
         allowNull: true,
         notEmpty: true,
     }
  });
 
 sequelize.sync().then(() => {
-    console.log('Job table created successfully!');
+    console.log('Job Candidates table created successfully!');
 }).catch((error) => {
     console.error('Unable to create table : ', error);
 });
 
-export default Job
+export default JobCandidate
