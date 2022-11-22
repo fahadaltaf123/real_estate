@@ -65,6 +65,25 @@ class JobCandidatesController {
 
     static getAllJobCandidates = async (req, res) => {
         const allJobs = await JobCandidate.findAll();
+
+        if(allJobs !== null){
+            res.status(200).send({
+                "status": "success",
+                "message": "All job candidates successfully listed",
+                "job_candidates": allJobs
+            })
+        } else {
+            res.status(200).send({
+                "status": "success",
+                "message": "No Job Candidate present",
+                "job_candidates": []
+            })
+        }
+    }
+
+    
+    static getAllJobCandidatesByJob = async (req, res) => {
+        const allJobs = await JobCandidate.find({where: {jobId: req.body.jobId} });
         
         if(allJobs !== null){
             res.status(200).send({

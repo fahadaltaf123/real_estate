@@ -67,6 +67,25 @@ class JobController {
             })
         }
     }
+
+    static getAllActiveJobs = async (req, res) => {
+        // const allJobs = await Job.findAll();
+        const allJobs = await JobCandidate.find({where: {isActive: 1} });
+
+        if(allJobs !== null) {
+            res.status(200).send({
+                "status": "success",
+                "message": "Get all jobs successfully",
+                "jobs": allJobs
+            })
+        } else {
+            res.status(200).send({
+                "status": "success",
+                "message": "No Job present",
+                "jobs": []
+            })
+        }
+    }
 }
 
 export default JobController
