@@ -24,6 +24,11 @@ const Job = sequelize.define("jobs", {
         allowNull: true,
         notEmpty: true,
     },
+    vacancies: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        notEmpty: true,
+    },
     experience: {
         type: DataTypes.INTEGER,
         allowNull: true,

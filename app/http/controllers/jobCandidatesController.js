@@ -8,11 +8,12 @@ dotenv.config()
 
 class JobCandidatesController {
     static addJobCandidate = async (req, res) => {
-        const {jobId, firstName, lastName,email,phone, experience, age, currentSalary, expectedSalary, coverLetter} = req.body
+        const {jobId, firstName, lastName,email,phone, experience, age, currentSalary, expectedSalary, coverLetter} = req.body;
+        console.log({jobId, firstName, lastName,email,phone, experience, age, currentSalary, expectedSalary, coverLetter});
         if (jobId && firstName && lastName && email && phone && experience && age && currentSalary && expectedSalary && coverLetter) {
             try {
+                const jobObj = await Job.findOne({where: {id:jobId,isActive:1} });
 
-                const jobObj = await Job.findOne({where: {id:jobId,isActive:1} })
                 if(!jobObj) {
                     res.status(404).send({
                         "status": "success",
@@ -21,7 +22,8 @@ class JobCandidatesController {
                     return;
                 }
 
-                const jobCandidateObj = await JobCandidate.findOne({where: {jobId:jobId,email: email} })
+                const jobCandidateObj = await JobCandidate.findOne({where: {jobId:jobId,email: email} });
+
                 if(jobCandidateObj) {
                     res.status(404).send({
                         "status": "success",
@@ -38,11 +40,21 @@ class JobCandidatesController {
                     phone: phone,
                     experience: experience,
                     age: age,
+                    status: "New",
                     currentSalary: currentSalary,
                     expectedSalary: expectedSalary,
                     coverLetter: coverLetter,
                 })
+
                 await createJob.save();
+                
+                await Job.update(
+                    { applicants: (jobObj.applicants+1) },
+                    { where: { id: jobId } }
+                  )
+                // Job.updateAttributes({
+                //     applicants: (jobObj.applicants+1)
+                // });
 
                 res.status(200).send({
                     "status": "success",
@@ -81,9 +93,9 @@ class JobCandidatesController {
         }
     }
 
-    
     static getAllJobCandidatesByJob = async (req, res) => {
-        const allJobs = await JobCandidate.find({where: {jobId: req.body.jobId} });
+        console.log(req);
+        const allJobs = await JobCandidate.findAll({where: {jobId: req.query.jobId} });
         
         if(allJobs !== null){
             res.status(200).send({

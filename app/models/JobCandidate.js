@@ -44,8 +44,18 @@ const JobCandidate = sequelize.define("job_candidates", {
         allowNull: true,
         notEmpty: true,
     },
+    status: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        notEmpty: true,
+    },
     phone: {
         type: DataTypes.STRING,
+        allowNull: true,
+        notEmpty: true,
+    },
+    resume: {
+        type: DataTypes.TEXT,
         allowNull: true,
         notEmpty: true,
     },
