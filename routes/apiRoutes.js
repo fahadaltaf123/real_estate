@@ -10,7 +10,7 @@ const router = express.Router();
 //public routes
 router.post('/register', UserController.Register)
 router.post('/login', UserController.Login)
-router.get('/jobs/active/list',  JobController.getAllActiveJobs)
+router.get('/job/active/list',  JobController.getAllActiveJobs)
 //protected routes
 
 //Job Routes

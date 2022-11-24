@@ -9,7 +9,7 @@ dotenv.config()
 class JobCandidatesController {
     static addJobCandidate = async (req, res) => {
         const {jobId, firstName, lastName,email,phone, experience, age, currentSalary, expectedSalary, coverLetter} = req.body;
-        console.log({jobId, firstName, lastName,email,phone, experience, age, currentSalary, expectedSalary, coverLetter});
+        //console.log({jobId, firstName, lastName,email,phone, experience, age, currentSalary, expectedSalary, coverLetter});
         if (jobId && firstName && lastName && email && phone && experience && age && currentSalary && expectedSalary && coverLetter) {
             try {
                 const jobObj = await Job.findOne({where: {id:jobId,isActive:1} });

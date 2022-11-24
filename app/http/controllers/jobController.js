@@ -81,7 +81,8 @@ class JobController {
 
     static getAllActiveJobs = async (req, res) => {
         // const allJobs = await Job.findAll();
-        const allJobs = await JobCandidate.findAll({where: {isActive: 1} });
+        //const allJobs = await JobCandidate.findAll({where: {isActive: 1} });
+        const allJobs = await Job.findAll({where: {isActive: 1} });
 
         if(allJobs !== null) {
             res.status(200).send({
