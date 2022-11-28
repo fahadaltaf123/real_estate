@@ -22,7 +22,7 @@ class DepartmentController {
 
                 res.status(200).send({
                     "status": "success",
-                    "message": "Add Job successfully"
+                    "message": "Add Department successfully"
                 });
 
             } catch (error) {
@@ -46,7 +46,7 @@ class DepartmentController {
         if(allDepartments !== null) {
             res.status(200).send({
                 "status": "success",
-                "message": "Get all jobs successfully",
+                "message": "Get all Departments successfully",
                 "departments":allDepartments
             })
         } else {

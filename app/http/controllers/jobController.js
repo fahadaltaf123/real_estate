@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import User from "../../models/User.js";
+import CustomErrorHandler from "../../services/CustomErrorHandler.js"
 dotenv.config()
 
 class JobController {
@@ -96,6 +97,40 @@ class JobController {
                 "message": "No Job present",
                 "jobs": []
             })
+        }
+    }
+
+    static getJobById = async (req, res, next) =>{
+        const jobId = req.params.id
+        try {
+            const jobById = await Job.findAll({where:{id:jobId}})
+            if(jobById){
+                res.status(200).send({
+                    "status": "success",
+                    "message": "get Job successfully"
+                })
+            }
+        } catch (error) {
+            return next(error)
+        }
+    }
+
+    static updateJobStatus = async (req, res, next) => {
+        const jobId = req.query.jobId
+        const {status} = req.body
+        try {       
+            const jobUpdate = await Job.update({status: status}, {where:{id:jobId}})
+            if(jobUpdate[0] ===  0){
+                return next(CustomErrorHandler.notFound())
+            }else{
+                res.status(200).send({
+                    "status": "success",
+                    "message": "update job status successfully",
+                    job:jobUpdate
+                })
+            }
+        } catch (error) {    
+            return next(error)   
         }
     }
 }

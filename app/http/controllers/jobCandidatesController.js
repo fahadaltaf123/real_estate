@@ -5,6 +5,9 @@ import dotenv from 'dotenv'
 import User from "../../models/User.js";
 import Job from "../../models/Job.js";
 import fs from 'fs';
+import CustomErrorHandler from "../../services/CustomErrorHandler.js"
+import mailer from "nodemailer"
+import CustomErrorHandler from "../../services/CustomErrorHandler.js"
 
 dotenv.config()
 
@@ -112,7 +115,6 @@ class JobCandidatesController {
     }
 
     static getAllJobCandidatesByJob = async (req, res) => {
-        console.log(req);
         const allJobs = await JobCandidate.findAll({where: {jobId: req.query.jobId},order: [
             ['id', 'DESC']
         ] });
@@ -129,6 +131,57 @@ class JobCandidatesController {
                 "message": "No Job Candidate present",
                 "job_candidates": []
             })
+        }
+    }
+
+    static updateJobCandidateStatus = async (req, res, next) => {
+        const candId = req.query.candId
+        const {status} = req.body
+        try {
+            const cand = await JobCandidate.update({status: status}, {where:{id:candId}})
+            console.log(cand[0])
+            if(cand[0] ===  0){
+                return next(CustomErrorHandler.notFound())
+            }else{
+                res.status(200).send({
+                    "status": "success",
+                    "message": "update candidate status successfully"
+                })
+            }
+        } catch (error) {
+            return next(error)
+        }
+    }
+
+    static sendMailToCandidate = async (req, res, next) => {
+        try {
+            const transporter = mailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: 'muhammadhassanjutt786@gmail.com',
+                  pass: 'hassan'
+                }
+            });
+            const mailOptions = {
+                from: 'muhammadhassanjutt786@gmail.com',
+                to: 'ahaseeb123148@gmail.com',
+                subject: 'Sending Email using Node.js',
+                text: 'That was easy!'
+            };
+              
+            transporter.sendMail(mailOptions, function(error, info){
+              if (error) {
+                console.log(error);
+              } else {
+                console.log('Email sent: ' + info.response);
+              }
+            });
+            res.status(200).send({
+                "status": "success",
+                "message": "mail sent successfully"
+            })
+        } catch (error) {
+            return next(error)
         }
     }
 }
