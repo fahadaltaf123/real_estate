@@ -7,7 +7,6 @@ import Job from "../../models/Job.js";
 import fs from 'fs';
 import CustomErrorHandler from "../../services/CustomErrorHandler.js"
 import mailer from "nodemailer"
-import CustomErrorHandler from "../../services/CustomErrorHandler.js"
 
 dotenv.config()
 
@@ -15,13 +14,13 @@ class JobCandidatesController {
     static addJobCandidate = async (req, res) => {
         // console.log(req.files);
         // console.log(req.files);
-        const {jobId, firstName, lastName,email,phone, experience, age, currentSalary, expectedSalary, coverLetter,resume} = req.body;
+        const { jobId, firstName, lastName, email, phone, experience, age, currentSalary, expectedSalary, coverLetter, resume } = req.body;
         //console.log({jobId, firstName, lastName,email,phone, experience, age, currentSalary, expectedSalary, coverLetter});
         if (jobId && firstName && lastName && email && phone && experience && age && currentSalary && expectedSalary && coverLetter && resume) {
             try {
-                const jobObj = await Job.findOne({where: {id:jobId,isActive:1} });
+                const jobObj = await Job.findOne({ where: { id: jobId, isActive: 1 } });
 
-                if(!jobObj) {
+                if (!jobObj) {
                     res.status(404).send({
                         "status": "success",
                         "message": "Invalid Job"
@@ -29,9 +28,9 @@ class JobCandidatesController {
                     return;
                 }
 
-                const jobCandidateObj = await JobCandidate.findOne({where: {jobId:jobId,email: email} });
+                const jobCandidateObj = await JobCandidate.findOne({ where: { jobId: jobId, email: email } });
 
-                if(jobCandidateObj) {
+                if (jobCandidateObj) {
                     res.status(404).send({
                         "status": "success",
                         "message": "You already applied to this job"
@@ -44,11 +43,11 @@ class JobCandidatesController {
                 // Remove header
                 let base64File = base64String.split(';base64,').pop();
                 const type = base64String.split(';')[0].split('/')[1];
-                
+
                 let fileName = Math.floor(Date.now() / 1000);
 
-                let filePath = 'uploads/'+fileName+'.'+type;
-                fs.writeFile(filePath, base64File, {encoding: 'base64'}, function(err) {
+                let filePath = 'uploads/' + fileName + '.' + type;
+                fs.writeFile(filePath, base64File, { encoding: 'base64' }, function (err) {
                     console.log('File created');
                 });
 
@@ -64,15 +63,15 @@ class JobCandidatesController {
                     currentSalary: currentSalary,
                     expectedSalary: expectedSalary,
                     coverLetter: coverLetter,
-                    resume: (fileName+'.'+type) //base 64
+                    resume: (fileName + '.' + type) //base 64
                 })
 
                 await createJob.save();
-                
+
                 await Job.update(
-                    { applicants: (jobObj.applicants+1) },
+                    { applicants: (jobObj.applicants + 1) },
                     { where: { id: jobId } }
-                  )
+                )
                 // Job.updateAttributes({
                 //     applicants: (jobObj.applicants+1)
                 // });
@@ -99,7 +98,7 @@ class JobCandidatesController {
     static getAllJobCandidates = async (req, res) => {
         const allJobs = await JobCandidate.findAll();
 
-        if(allJobs !== null){
+        if (allJobs !== null) {
             res.status(200).send({
                 "status": "success",
                 "message": "All job candidates successfully listed",
@@ -115,11 +114,13 @@ class JobCandidatesController {
     }
 
     static getAllJobCandidatesByJob = async (req, res) => {
-        const allJobs = await JobCandidate.findAll({where: {jobId: req.query.jobId},order: [
-            ['id', 'DESC']
-        ] });
-        
-        if(allJobs !== null){
+        const allJobs = await JobCandidate.findAll({
+            where: { jobId: req.query.jobId }, order: [
+                ['id', 'DESC']
+            ]
+        });
+
+        if (allJobs !== null) {
             res.status(200).send({
                 "status": "success",
                 "message": "All job candidates successfully listed",
@@ -136,13 +137,13 @@ class JobCandidatesController {
 
     static updateJobCandidateStatus = async (req, res, next) => {
         const candId = req.query.candId
-        const {status} = req.body
+        const { status } = req.body
         try {
-            const cand = await JobCandidate.update({status: status}, {where:{id:candId}})
+            const cand = await JobCandidate.update({ status: status }, { where: { id: candId } })
             console.log(cand[0])
-            if(cand[0] ===  0){
+            if (cand[0] === 0) {
                 return next(CustomErrorHandler.notFound())
-            }else{
+            } else {
                 res.status(200).send({
                     "status": "success",
                     "message": "update candidate status successfully"
@@ -156,10 +157,11 @@ class JobCandidatesController {
     static sendMailToCandidate = async (req, res, next) => {
         try {
             const transporter = mailer.createTransport({
-                service: 'gmail',
+                host: 'smtp.mailtrap.io',
+                port: 2525,
                 auth: {
-                  user: 'muhammadhassanjutt786@gmail.com',
-                  pass: 'hassan'
+                    user: process.env.EMAIL_USERNAME,
+                    pass: process.env.EMAIL_PASSWORD
                 }
             });
             const mailOptions = {
@@ -168,13 +170,13 @@ class JobCandidatesController {
                 subject: 'Sending Email using Node.js',
                 text: 'That was easy!'
             };
-              
-            transporter.sendMail(mailOptions, function(error, info){
-              if (error) {
-                console.log(error);
-              } else {
-                console.log('Email sent: ' + info.response);
-              }
+
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
             });
             res.status(200).send({
                 "status": "success",
