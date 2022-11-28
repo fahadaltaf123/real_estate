@@ -30,5 +30,6 @@ router.get('/job/candidates/list', [checkUserAuth], JobCandidatesController.getA
 router.get('/job/candidates/job/list', [checkUserAuth], JobCandidatesController.getAllJobCandidatesByJob) //candidates by job id
 router.post('/job/candidate/status/update', [checkUserAuth], JobCandidatesController.updateJobCandidateStatus) //update candidate status by candidate id
 router.get('/job/candidate/mail/send', [checkUserAuth], JobCandidatesController.sendMailToCandidate) //send mail to candidate by candidate id
+router.get('/job/candidate/shortlisted/list', [checkUserAuth], JobCandidatesController.getAllShortlistedCandidates)
 
 export default router

@@ -155,33 +155,61 @@ class JobCandidatesController {
     }
 
     static sendMailToCandidate = async (req, res, next) => {
+        const candId = req.query.candId
         try {
-            const transporter = mailer.createTransport({
-                host: 'smtp.mailtrap.io',
-                port: 2525,
-                auth: {
-                    user: process.env.EMAIL_USERNAME,
-                    pass: process.env.EMAIL_PASSWORD
-                }
-            });
-            const mailOptions = {
-                from: 'muhammadhassanjutt786@gmail.com',
-                to: 'ahaseeb123148@gmail.com',
-                subject: 'Sending Email using Node.js',
-                text: 'That was easy!'
-            };
+            const candObj = await JobCandidate.findOne({ where: { id: candId} })
+            if(candObj.length != 0){
+                const transporter = mailer.createTransport({
+                    host: 'smtp.mailtrap.io',
+                    port: 2525,
+                    auth: {
+                        user: process.env.EMAIL_USERNAME,
+                        pass: process.env.EMAIL_PASSWORD
+                    }
+                });
+                const mailOptions = {
+                    from: 'muhammadhassanjutt786@gmail.com',
+                    to: candObj.email,
+                    subject: 'Sheranwala Developers',
+                    html: '<div><h4>Dear Mr. '+candObj.firstName+' '+candObj.lastName+'</h4></div>'
+                };
+    
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                });
+                res.status(200).send({
+                    "status": "success",
+                    "message": "mail sent successfully"
+                })
+            }else{
+                return next(CustomErrorHandler.notFound())
+            }
+            
+        } catch (error) {
+            return next(error)
+        }
+    }
 
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log('Email sent: ' + info.response);
-                }
-            });
-            res.status(200).send({
-                "status": "success",
-                "message": "mail sent successfully"
-            })
+    static getAllShortlistedCandidates = async (req, res, next) => {
+        try {
+            const allCandidates = await JobCandidate.findAll({where: {status: "ShortListed"} })
+            if(allCandidates != 0) {
+                res.status(200).send({
+                    "status": "success",
+                    "message": "Get all candidates successfully",
+                    "Candidates": allCandidates
+                })
+            } else {
+                res.status(200).send({
+                    "status": "success",
+                    "message": "No candidate present",
+                    "Candidates": []
+                })
+            }
         } catch (error) {
             return next(error)
         }
