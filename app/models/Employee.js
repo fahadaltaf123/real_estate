@@ -3,38 +3,28 @@ import dotenv from 'dotenv'
 dotenv.config()
 import sequelize from "../../config/connectdb.js"
 
-const JobCandidate = sequelize.define("job_candidates", {
-    jobId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      notEmpty: true,
-    },
-    experience: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        notEmpty: true,
-    },
-    age: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        notEmpty: true,
-    },
-    currentSalary: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        notEmpty: true,
-    },
-    expectedSalary: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        notEmpty: true,
-    },
-    firstName: {
+const Employee = sequelize.define("employees", {
+    fullName: {
         type: DataTypes.STRING,
         allowNull: true,
         notEmpty: true,
     },
-    lastName: {
+    fatherName: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        notEmpty: true,
+    },
+    dob: {
+        type: DataTypes.DATEONLY,
+        allowNull: true,
+        notEmpty: true,
+    },
+    cnic: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        notEmpty: true,
+    },
+    contact: {
         type: DataTypes.STRING,
         allowNull: true,
         notEmpty: true,
@@ -44,57 +34,77 @@ const JobCandidate = sequelize.define("job_candidates", {
         allowNull: true,
         notEmpty: true,
     },
-    status: {
+    maritalStatus: {
         type: DataTypes.STRING,
         allowNull: true,
         notEmpty: true,
     },
-    phone: {
+    address: {
         type: DataTypes.STRING,
         allowNull: true,
         notEmpty: true,
     },
-    resume: {
-        type: DataTypes.TEXT,
+    employeeId: {
+        type: DataTypes.STRING,
         allowNull: true,
         notEmpty: true,
     },
-    coverLetter: {
-        type: DataTypes.TEXT,
+    designation: {
+        type: DataTypes.STRING,
         allowNull: true,
         notEmpty: true,
     },
-    interviewDate: {
-        type: DataTypes.DATEONLY,
+    department: {
+        type: DataTypes.STRING,
         allowNull: true,
-        notEmpty: false,
+        notEmpty: true,
     },
-    interviewTime: {
-        type: DataTypes.TIME,
+    branch: {
+        type: DataTypes.STRING,
         allowNull: true,
-        notEmpty: false,
-    },
-    interviewDesc: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        notEmpty: false,
-    },
-    remarks: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        notEmpty: false,
+        notEmpty: true,
     },
     dateOfJoining: {
         type: DataTypes.DATEONLY,
         allowNull: true,
         notEmpty: false,
-    }
+    },
+    basicSalary: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        notEmpty: true,
+    },
+    emergencyContactName: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        notEmpty: true,
+    },
+    relationship: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        notEmpty: true,
+    },
+    emergencyContactNumber: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        notEmpty: true,
+    },
+    emergencyContactAddress: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        notEmpty: true,
+    },
+    status: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        notEmpty: true,
+    },
  });
 
 sequelize.sync().then(() => {
-    console.log('Job Candidates table created successfully!');
+    console.log('Employee table created successfully!');
 }).catch((error) => {
     console.error('Unable to create table : ', error);
 });
 
-export default JobCandidate
+export default Employee

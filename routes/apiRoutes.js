@@ -28,8 +28,9 @@ router.get('/department/active/list',[checkUserAuth],  DepartmentController.getA
 router.post('/job/candidates/add', [checkUserAuth], JobCandidatesController.addJobCandidate)
 router.get('/job/candidates/list', [checkUserAuth], JobCandidatesController.getAllJobCandidates)//all candidates
 router.get('/job/candidates/job/list', [checkUserAuth], JobCandidatesController.getAllJobCandidatesByJob) //candidates by job id
-router.post('/job/candidate/status/update', [checkUserAuth], JobCandidatesController.updateJobCandidateStatus) //update candidate status by candidate id
-router.get('/job/candidate/mail/send', [checkUserAuth], JobCandidatesController.sendMailToCandidate) //send mail to candidate by candidate id
+//router.post('/job/candidate/status/update', [checkUserAuth], JobCandidatesController.updateJobCandidateStatus)
+//router.get('/job/candidate/mail/send', [checkUserAuth], JobCandidatesController.sendMailToCandidate) //send mail to candidate by candidate id
 router.get('/job/candidate/shortlisted/list', [checkUserAuth], JobCandidatesController.getAllShortlistedCandidates)
+router.post('/job/candidates/status/update', JobCandidatesController.updateStatusCandidates)//update candidate status by candidate id
 
 export default router

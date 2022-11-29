@@ -7,6 +7,7 @@ import Job from "../../models/Job.js";
 import fs from 'fs';
 import CustomErrorHandler from "../../services/CustomErrorHandler.js"
 import mailer from "nodemailer"
+import CandidateStatus from "../../services/CandidateStatus.js"
 
 dotenv.config()
 
@@ -135,64 +136,64 @@ class JobCandidatesController {
         }
     }
 
-    static updateJobCandidateStatus = async (req, res, next) => {
-        const candId = req.query.candId
-        const { status } = req.body
-        try {
-            const cand = await JobCandidate.update({ status: status }, { where: { id: candId } })
-            console.log(cand[0])
-            if (cand[0] === 0) {
-                return next(CustomErrorHandler.notFound())
-            } else {
-                res.status(200).send({
-                    "status": "success",
-                    "message": "update candidate status successfully"
-                })
-            }
-        } catch (error) {
-            return next(error)
-        }
-    }
+    // static updateJobCandidateStatus = async (req, res, next) => {
+    //     const candId = req.query.candId
+    //     const { status } = req.body
+    //     try {
+    //         const cand = await JobCandidate.update({ status: status }, { where: { id: candId } })
+    //         console.log(cand[0])
+    //         if (cand[0] === 0) {
+    //             return next(CustomErrorHandler.notFound())
+    //         } else {
+    //             res.status(200).send({
+    //                 "status": "success",
+    //                 "message": "update candidate status successfully"
+    //             })
+    //         }
+    //     } catch (error) {
+    //         return next(error)
+    //     }
+    // }
 
-    static sendMailToCandidate = async (req, res, next) => {
-        const candId = req.query.candId
-        try {
-            const candObj = await JobCandidate.findOne({ where: { id: candId} })
-            if(candObj.length != 0){
-                const transporter = mailer.createTransport({
-                    host: 'smtp.mailtrap.io',
-                    port: 2525,
-                    auth: {
-                        user: process.env.EMAIL_USERNAME,
-                        pass: process.env.EMAIL_PASSWORD
-                    }
-                });
-                const mailOptions = {
-                    from: 'muhammadhassanjutt786@gmail.com',
-                    to: candObj.email,
-                    subject: 'Sheranwala Developers',
-                    html: '<div><h4>Dear Mr. '+candObj.firstName+' '+candObj.lastName+'</h4></div>'
-                };
+    // static sendMailToCandidate = async (req, res, next) => {
+    //     const candId = req.query.candId
+    //     try {
+    //         const candObj = await JobCandidate.findOne({ where: { id: candId} })
+    //         if(candObj.length != 0){
+    //             const transporter = mailer.createTransport({
+    //                 host: 'smtp.mailtrap.io',
+    //                 port: 2525,
+    //                 auth: {
+    //                     user: process.env.EMAIL_USERNAME,
+    //                     pass: process.env.EMAIL_PASSWORD
+    //                 }
+    //             });
+    //             const mailOptions = {
+    //                 from: 'muhammadhassanjutt786@gmail.com',
+    //                 to: candObj.email,
+    //                 subject: 'Sheranwala Developers',
+    //                 html: '<div><h4>Dear Mr. '+candObj.firstName+' '+candObj.lastName+'</h4></div>'
+    //             };
     
-                transporter.sendMail(mailOptions, function (error, info) {
-                    if (error) {
-                        console.log(error);
-                    } else {
-                        console.log('Email sent: ' + info.response);
-                    }
-                });
-                res.status(200).send({
-                    "status": "success",
-                    "message": "mail sent successfully"
-                })
-            }else{
-                return next(CustomErrorHandler.notFound())
-            }
+    //             transporter.sendMail(mailOptions, function (error, info) {
+    //                 if (error) {
+    //                     console.log(error);
+    //                 } else {
+    //                     console.log('Email sent: ' + info.response);
+    //                 }
+    //             });
+    //             res.status(200).send({
+    //                 "status": "success",
+    //                 "message": "mail sent successfully"
+    //             })
+    //         }else{
+    //             return next(CustomErrorHandler.notFound())
+    //         }
             
-        } catch (error) {
-            return next(error)
-        }
-    }
+    //     } catch (error) {
+    //         return next(error)
+    //     }
+    // }
 
     static getAllShortlistedCandidates = async (req, res, next) => {
         try {
@@ -213,6 +214,10 @@ class JobCandidatesController {
         } catch (error) {
             return next(error)
         }
+    }
+
+    static updateStatusCandidates = async (req, res, next) => {
+        CandidateStatus.updateCandidateStatus(req.body, res, next)
     }
 }
 
