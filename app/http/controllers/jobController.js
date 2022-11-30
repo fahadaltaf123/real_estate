@@ -3,8 +3,16 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import User from "../../models/User.js";
+import Department from "../../models/Department.js";
 import CustomErrorHandler from "../../services/CustomErrorHandler.js"
 dotenv.config()
+
+async function getDepartmentTitleById(id) {
+    const jobCandidateObj = await Department.findOne({ where: { id: id } });
+
+    console.log('jobCandidateObj',jobCandidateObj.title)
+    return jobCandidateObj? jobCandidateObj.title:'';
+};
 
 class JobController {
     static addJob = async (req, res) =>{
@@ -57,13 +65,16 @@ class JobController {
 
         let jobs = [];
 
-        allJobs.forEach(element => {
+        for (let element of allJobs) {
             element.applicants = element.applicants + ' Candidates';
             element.jobtype = element.jobtype.replace(/([A-Z])/g, ' $1')
             // uppercase the first character
-            .replace(/^./, function(str){ return str.toUpperCase(); });
-            jobs.push(element);  
-        });
+                .replace(/^./, function(str){ return str.toUpperCase(); });
+
+            element.department = await getDepartmentTitleById(element.department);
+
+            jobs.push(element);
+        }
 
         if(allJobs !== null) {
             res.status(200).send({

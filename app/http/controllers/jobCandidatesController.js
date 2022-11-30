@@ -219,6 +219,37 @@ class JobCandidatesController {
     static updateStatusCandidates = async (req, res, next) => {
         CandidateStatus.updateCandidateStatus(req.body, res, next)
     }
+
+    static updateStatusCalledCandidates = async (req, res, next) =>
+    {
+        const {candId, jobId, status} = req.body
+
+        if (candId && jobId && status) {
+            try {
+                await JobCandidate.update(
+                    { status: (status) },
+                    { where: { id: candId,jobId: jobId } }
+                );
+
+                res.status(200).send({
+                    "status": "success",
+                    "message": "Status updated successfully"
+                })
+            } catch (error) {
+                console.log(error);
+                res.status(400).send({
+                    "status": "failed",
+                    "message": "Unable to Add Job",
+                })
+            }
+        } else {
+            res.status(400).send({
+                "status": "failed",
+                "message": "All fields are required"
+            })
+        }
+    }
+
 }
 
 export default JobCandidatesController

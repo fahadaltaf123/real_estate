@@ -39,6 +39,7 @@ router.get('/job/candidates/job/list', [checkUserAuth], JobCandidatesController.
 //router.get('/job/candidate/mail/send', [checkUserAuth], JobCandidatesController.sendMailToCandidate) //send mail to candidate by candidate id
 router.get('/job/candidate/shortlisted/list', [checkUserAuth], JobCandidatesController.getAllShortlistedCandidates)
 router.post('/job/candidates/status/update', JobCandidatesController.updateStatusCandidates)//update candidate status by candidate id
+router.post('/job/candidates/status/called/update', JobCandidatesController.updateStatusCalledCandidates)//update candidate status by candidate id
 
 //Employee Routes
 router.post('/employee/add', [checkUserAuth], EmployeeController.addEmployee)
