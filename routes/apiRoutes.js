@@ -3,6 +3,8 @@ import UserController from "../app/http/controllers/userController.js"
 import JobController from "../app/http/controllers/jobController.js"
 import JobCandidatesController from "../app/http/controllers/jobCandidatesController.js"
 import DepartmentController from "../app/http/controllers/departmentController.js"
+import DesignationController from "../app/http/controllers/designationController.js"
+import EmployeeController from "../app/http/controllers/employeeController.js"
 import checkUserAuth from "../app/http/middlewares/authUser.js"
 
 const router = express.Router();
@@ -24,6 +26,11 @@ router.post('/department/add', [checkUserAuth], DepartmentController.addDeparmen
 router.get('/department/list',[checkUserAuth],  DepartmentController.getAllDepartments)
 router.get('/department/active/list',[checkUserAuth],  DepartmentController.getAllActiveDepartments)
 
+//Designation Routes
+router.post('/designation/add', [checkUserAuth], DesignationController.addDesignation)
+router.get('/designation/list',[checkUserAuth],  DesignationController.getAllDesignations)
+router.get('/designation/active/list',[checkUserAuth],  DesignationController.getAllActiveDesignations)
+
 //Job Candidates Routes
 router.post('/job/candidates/add', [checkUserAuth], JobCandidatesController.addJobCandidate)
 router.get('/job/candidates/list', [checkUserAuth], JobCandidatesController.getAllJobCandidates)//all candidates
@@ -32,5 +39,8 @@ router.get('/job/candidates/job/list', [checkUserAuth], JobCandidatesController.
 //router.get('/job/candidate/mail/send', [checkUserAuth], JobCandidatesController.sendMailToCandidate) //send mail to candidate by candidate id
 router.get('/job/candidate/shortlisted/list', [checkUserAuth], JobCandidatesController.getAllShortlistedCandidates)
 router.post('/job/candidates/status/update', JobCandidatesController.updateStatusCandidates)//update candidate status by candidate id
+
+//Employee Routes
+router.post('/employee/add', [checkUserAuth], EmployeeController.addEmployee)
 
 export default router
