@@ -69,7 +69,8 @@ class UserController {
                         res.status(200).send({
                             "status": "success",
                             "message": "User Login Successfully",
-                            "token":token
+                            "token":token,
+                            "user": user
                         })
                     } else {
                         res.status(401).send({
