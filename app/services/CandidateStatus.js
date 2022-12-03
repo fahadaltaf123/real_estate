@@ -2,7 +2,12 @@ import JobCandidate from "../models/JobCandidate.js";
 import CustomErrorHandler from "../services/CustomErrorHandler.js"
 import mailer from "nodemailer"
 import dotenv from 'dotenv'
-dotenv.config()
+// import { WhatsAppAPI,Types} from "whatsapp-api-js";
+import { createBot } from 'whatsapp-cloud-api';
+// const { Text } = Types;
+// var axios = require('axios');
+import Axios from "axios";
+dotenv.config();
 
 class CandidateStatus {
     static updateCandidateStatus = async (body, res, next) => {
@@ -12,8 +17,84 @@ class CandidateStatus {
             try {
                 const candObj = await JobCandidate.update({ status:status, interviewDate: interviewDate, interviewTime: interviewTime, interviewDesc: interviewDesc }, { where: { id: candId } })
                 const candObject = await JobCandidate.findOne({ where: { id: candId} })
-                console.log(candObject);
+                // console.log(candObject);
                 if (candObj.length != 0) {
+                    // const token = process.env.WHATSAPP_API_TOKEN;
+                    // const Whatsapp = new WhatsAppAPI(token);
+                    
+                    // Handlers.post(JSON.parse(e.data), onMessage);
+                    
+                    // const phoneID = 110479351898984;
+                    // const phoneID = 101684492791476;
+                    // const phone = '+923214648784'; 
+                    // const name = 'Faizan';
+                    // const body = 'body';
+
+                    // const messageId = 1;
+
+                    // const from = '110479351898984';
+                    // const token = 'YOUR_TEMPORARY_OR_PERMANENT_ACCESS_TOKEN';
+                    // const to = '923214648784';
+                    // const webhookVerifyToken = 'YOUR_WEBHOOK_VERIFICATION_TOKEN';
+                
+                    // Create a bot that can send messages
+                    // const bot = createBot(from, token);
+                
+                    // Send text message
+                    // const result = await bot.sendText(to, 'Hello world');
+
+                   
+                    // var data = JSON.stringify({
+                    //   "messaging_product": "whatsapp",
+                    //   "to": "923214648784",
+                    //   "type": "template",
+                    //   "template": {
+                    //     "name": "hello_world",
+                    //     "language": {
+                    //       "code": "en_US"
+                    //     }
+                    //   }
+                    // });
+                    
+                    // var data = JSON.stringify({
+                    //     "messaging_product": "whatsapp",
+                    //     "to": "923214648784",
+                    //     "type": "template",
+                    //     "template": {
+                    //       "name": "interview_scheduled",
+                    //       "language": {
+                    //         "code": "en_US"
+                    //       }
+                    //     }
+                    //   });
+                    
+                    // var config = {
+                    //   method: 'post',
+                    //   url: 'https://graph.facebook.com/v15.0/110479351898984/messages',
+                    //   headers: { 
+                    //     'Authorization': 'Bearer EAARx5ere3bgBAK0tSpVnLPn6vHCiKqefzhgGlgnfIlcxnziRNf8NOHTZA47AAc8W4LreBxORq7tldenWNzLnb6YXh1yQTYSrgGgsV3JAMDbVXrZBpF2lbZCwc8KIaLuf1Hl8P5KXSosm5E5K82juMRgL7qZCYrE8ZApBuRZBTLYDGY1lSf9NgHspDBK7jmJvqv96XfQXeWCS4z8P1bPTx6CNKOnNlk2AQZD', 
+                    //     'Content-Type': 'application/json'
+                    //   },
+                    //   data : data
+                    // };
+                    
+                    // axios(config)
+                    // .then(function (response) {
+                    //   console.log(JSON.stringify(response.data));
+                    // })
+                    // .catch(function (error) {
+                    //   console.log(error);
+                    // });
+                    
+
+                    // console.log('result',result);
+                    // Whatsapp.sendMessage(phoneID, phone, new Text(`*${name}* said:\n\n${body}`), messageId);
+                
+                    
+                    // Whatsapp.logSentMessages((phoneID, phone, message, raw_data) => {
+                    //     console.log(`Bot ${phoneID} sent to user ${phone} ${JSON.stringify(message)}\n\n${JSON.stringify(raw_data)}`);
+                    // });
+
                     const transporter = mailer.createTransport({
                         host: 'smtp.mailtrap.io',
                         port: 2525,
@@ -44,6 +125,7 @@ class CandidateStatus {
                     return next(CustomErrorHandler.notFound())
                 }
             } catch (error) {
+                console.log(error);
                 return next(error)
             }
         }else if(body.hasOwnProperty('candId') && body.hasOwnProperty('status') && body.hasOwnProperty('remarks')){

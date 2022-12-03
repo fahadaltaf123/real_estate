@@ -21,7 +21,9 @@
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
     "nodemailer": "^6.8.0",
-    "sequelize": "^6.25.5"
+    "sequelize": "^6.25.5",
+    "whatsapp-api-js": "^0.8.0",
+    "whatsapp-cloud-api": "^0.2.6"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

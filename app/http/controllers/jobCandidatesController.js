@@ -17,7 +17,7 @@ class JobCandidatesController {
         // console.log(req.files);
         const { jobId, firstName, lastName, email, phone, experience, age, currentSalary, expectedSalary, coverLetter, resume } = req.body;
         //console.log({jobId, firstName, lastName,email,phone, experience, age, currentSalary, expectedSalary, coverLetter});
-        if (jobId && firstName && lastName && email && phone && experience && age && currentSalary && expectedSalary && coverLetter && resume) {
+        if (jobId && firstName && lastName && email && phone && experience && currentSalary && expectedSalary && coverLetter && resume) {
             try {
                 const jobObj = await Job.findOne({ where: { id: jobId, isActive: 1 } });
 

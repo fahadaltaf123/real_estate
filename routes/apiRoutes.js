@@ -13,6 +13,8 @@ const router = express.Router();
 router.post('/register', UserController.Register)
 router.post('/login', UserController.Login)
 router.get('/job/active/list',  JobController.getAllActiveJobs)
+router.get('/job/details/:id',  JobController.getJobDetailsById)
+
 //protected routes
 
 //Job Routes

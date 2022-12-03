@@ -96,11 +96,24 @@ class JobController {
         //const allJobs = await JobCandidate.findAll({where: {isActive: 1} });
         const allJobs = await Job.findAll({where: {isActive: 1} });
 
+        let jobs = [];
+
+        for (let element of allJobs) {
+
+            element.jobtype = element.jobtype.replace(/([A-Z])/g, ' $1')
+            // uppercase the first character
+                .replace(/^./, function(str){ return str.toUpperCase(); });
+
+            element.department = await getDepartmentTitleById(element.department);
+
+            jobs.push(element);
+        }
+
         if(allJobs !== null) {
             res.status(200).send({
                 "status": "success",
                 "message": "Get all jobs successfully",
-                "jobs": allJobs
+                "jobs": jobs
             })
         } else {
             res.status(200).send({
@@ -119,6 +132,27 @@ class JobController {
                 res.status(200).send({
                     "status": "success",
                     "message": "get Job successfully"
+                })
+            }
+        } catch (error) {
+            return next(error)
+        }
+    }
+
+    static getJobDetailsById = async (req, res, next) =>{
+        const jobId = req.params.id
+        try {
+            const jobById = await Job.findOne({where:{id:jobId}});
+            if(jobById){
+                jobById.department = await getDepartmentTitleById(jobById.department);
+                jobById.jobtype = jobById.jobtype.replace(/([A-Z])/g, ' $1')
+                    .replace(/^./, function(str){ return str.toUpperCase(); });
+
+
+                res.status(200).send({
+                    "status": "success",
+                    "message": "get Job successfully",
+                    "job": jobById
                 })
             }
         } catch (error) {
