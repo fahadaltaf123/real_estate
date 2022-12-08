@@ -7,6 +7,7 @@ import { createBot } from 'whatsapp-cloud-api';
 // const { Text } = Types;
 // var axios = require('axios');
 import Axios from "axios";
+import twilio from "twilio";
 dotenv.config();
 
 class CandidateStatus {
@@ -19,6 +20,34 @@ class CandidateStatus {
                 const candObject = await JobCandidate.findOne({ where: { id: candId} })
                 // console.log(candObject);
                 if (candObj.length != 0) {
+
+// Download the helper library from https://www.twilio.com/docs/node/install
+// Set environment variables for your credentials
+// Read more at http://twil.io/secure
+                    const accountSid = process.env.TWILIO_ACC_ID;
+                    const authToken = process.env.TWILIO_AUTH_TOKEN;
+                    const twilioPhone = process.env.TWILIO_PHONE;
+                    const client = twilio(accountSid, authToken);
+
+                    const accountWSid = process.env.TWILIO_W_ACC_ID;
+                    const authWToken = process.env.TWILIO_W_AUTH_TOKEN;
+                    const twilioWhatsappPhone = process.env.TWILIO_W_PHONE;
+                    const wclient = twilio(accountWSid, authWToken);
+
+                    console.log('twilioWhatsappPhone',twilioWhatsappPhone);
+                    client.messages
+                        .create({ body: interviewDesc, from: twilioPhone, to: candObject.phone })
+                        .then(message => console.log(message.sid));
+
+                    wclient.messages
+                        .create({
+                            body: interviewDesc,
+                            from: twilioWhatsappPhone,
+                            to: 'whatsapp:'+candObject.phone
+                        })
+                        .then(message => console.log(message.sid))
+                .done();
+
                     // const token = process.env.WHATSAPP_API_TOKEN;
                     // const Whatsapp = new WhatsAppAPI(token);
                     
@@ -78,22 +107,6 @@ class CandidateStatus {
                     //   data : data
                     // };
                     
-                    // axios(config)
-                    // .then(function (response) {
-                    //   console.log(JSON.stringify(response.data));
-                    // })
-                    // .catch(function (error) {
-                    //   console.log(error);
-                    // });
-                    
-
-                    // console.log('result',result);
-                    // Whatsapp.sendMessage(phoneID, phone, new Text(`*${name}* said:\n\n${body}`), messageId);
-                
-                    
-                    // Whatsapp.logSentMessages((phoneID, phone, message, raw_data) => {
-                    //     console.log(`Bot ${phoneID} sent to user ${phone} ${JSON.stringify(message)}\n\n${JSON.stringify(raw_data)}`);
-                    // });
 
                     const transporter = mailer.createTransport({
                         host: 'smtp.mailtrap.io',
@@ -103,11 +116,13 @@ class CandidateStatus {
                             pass: process.env.EMAIL_PASSWORD
                         }
                     });
+
                     const mailOptions = {
-                        from: 'muhammadhassanjutt786@gmail.com',
+                        from: 'noreply@sheranwala.com',
                         to: candObject.email,
-                        subject: 'Sheranwala Developers',
-                        html: '<div><h4>Dear Mr. ' + candObject.firstName + ' ' + candObject.lastName + '</h4><p><span style="padding-left:100px; ">This</span> is to inform you that your profile has been shortlisted for the position of <b>Web Developer</b> at <b>Sheranwala Developers</b>. You are required to come for an interview on <b>'+ candObject.interviewDate +'</b> at <b>'+ candObject.interviewTime +'</b> sharp along with your updated resume. Kindly ask for the <b>HR Department</b> when you get here.</p></div>'
+                        subject: 'Interview Scheduled',
+                        html: interviewDesc
+                        // html: '<div><h4>Dear Mr. ' + candObject.firstName + ' ' + candObject.lastName + '</h4><p><span style="padding-left:100px; ">This</span> is to inform you that your profile has been shortlisted for the position of <b>Web Developer</b> at <b>Sheranwala Developers</b>. You are required to come for an interview on <b>'+ candObject.interviewDate +'</b> at <b>'+ candObject.interviewTime +'</b> sharp along with your updated resume. Kindly ask for the <b>HR Department</b> when you get here.</p></div>'
                     };
 
                     transporter.sendMail(mailOptions, function (error, info) {
@@ -117,6 +132,7 @@ class CandidateStatus {
                             console.log('Email sent: ' + info.response);
                         }
                     });
+
                     res.status(200).send({
                         "status": "success",
                         "message": "mail sent successfully"
