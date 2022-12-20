@@ -64,7 +64,25 @@ const JobCandidate = sequelize.define("job_candidates", {
         type: DataTypes.INTEGER,
         allowNull: true,
         notEmpty: true,
-        default: 0,
+        defaultValue: 0,
+    },
+    isOffered: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        notEmpty: true,
+        defaultValue: 0,
+    },
+
+    offerStatus: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        notEmpty: true,
+    },
+
+    offerSalary: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        notEmpty: true,
     },
     coverLetter: {
         type: DataTypes.TEXT,

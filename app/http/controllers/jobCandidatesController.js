@@ -97,7 +97,7 @@ class JobCandidatesController {
     }
 
     static getAllJobCandidates = async (req, res) => {
-        const allJobs = await JobCandidate.findAll();
+        const allJobs = await JobCandidate.findAll({ include: 'jobs'});
 
         if (allJobs !== null) {
             res.status(200).send({
@@ -127,6 +127,24 @@ class JobCandidatesController {
             res.status(200).send({
                 "status": "success",
                 "message": "No Short Listed Job Candidate present",
+                "job_candidates": []
+            })
+        }
+    }
+
+    static getAllOfferListJobCandidates = async (req, res) => {
+        const allJobs = await JobCandidate.findAll({where : {isOffered : '1'} ,  include: 'jobs'});
+
+        if (allJobs !== null) {
+            res.status(200).send({
+                "status": "success",
+                "message": "All Offerd Listed job candidates successfully listed",
+                "job_candidates": allJobs
+            })
+        } else {
+            res.status(200).send({
+                "status": "success",
+                "message": "No Offerd Listed Job Candidate present",
                 "job_candidates": []
             })
         }
@@ -240,7 +258,7 @@ class JobCandidatesController {
 
     static updateStatusCalledCandidates = async (req, res, next) =>
     {
-        const {candId, jobId, status} = req.body
+        const {candId, jobId, status , offerSalary} = req.body
 
         if (candId && jobId && status) {
             try {
@@ -253,6 +271,23 @@ class JobCandidatesController {
                 if(status == 'Short Listed'){
                     await JobCandidate.update(
                         { isShortListed: 1 },
+                        { where: { id: candId,jobId: jobId } }
+                    );
+                }else if(status == 'Offer Sent'){
+                    await JobCandidate.update(
+                        { isOffered: 1 , offerStatus : 1 , offerSalary:offerSalary },
+                        { where: { id: candId,jobId: jobId } }
+                    );
+                }
+                else if(status == 'Offer Accepted'){
+                    await JobCandidate.update(
+                        { isOffered: 1 , offerStatus : 2 },
+                        { where: { id: candId,jobId: jobId } }
+                    );
+                }
+                else if(status == 'Offer Rejected'){
+                    await JobCandidate.update(
+                        { isOffered: 1 , offerStatus : 0 },
                         { where: { id: candId,jobId: jobId } }
                     );
                 }
