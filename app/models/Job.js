@@ -2,6 +2,7 @@ import {Sequelize,DataTypes} from 'sequelize';
 import dotenv from 'dotenv'
 dotenv.config()
 import sequelize from "../../config/connectdb.js"
+import JobCandidate from './JobCandidate.js';
 
 const Job = sequelize.define("jobs", {
     jobtitle: {
@@ -82,6 +83,9 @@ const Job = sequelize.define("jobs", {
  });
 
 sequelize.sync().then(() => {
+     Job.associate = function(models) {
+        Job.hasMany(JobCandidate , {as: 'JobCandidate'})
+     };
     console.log('Job table created successfully!');
 }).catch((error) => {
     console.error('Unable to create table : ', error);

@@ -2,6 +2,7 @@ import {Sequelize,DataTypes} from 'sequelize';
 import dotenv from 'dotenv'
 dotenv.config()
 import sequelize from "../../config/connectdb.js"
+import Job from './Job.js';
 
 const JobCandidate = sequelize.define("job_candidates", {
     jobId: {
@@ -98,6 +99,7 @@ const JobCandidate = sequelize.define("job_candidates", {
  });
 
 sequelize.sync().then(() => {
+    JobCandidate.belongsTo(Job, {foreignKey: 'jobId' , as: 'jobs'})
     console.log('Job Candidates table created successfully!');
 }).catch((error) => {
     console.error('Unable to create table : ', error);

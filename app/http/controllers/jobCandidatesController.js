@@ -115,7 +115,7 @@ class JobCandidatesController {
     }
 
     static getAllShortListJobCandidates = async (req, res) => {
-        const allJobs = await JobCandidate.findAll({where : {isShortListed : '1'}});
+        const allJobs = await JobCandidate.findAll({where : {isShortListed : '1'} ,  include: 'jobs'});
 
         if (allJobs !== null) {
             res.status(200).send({
