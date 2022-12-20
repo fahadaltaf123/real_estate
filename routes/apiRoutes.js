@@ -37,6 +37,8 @@ router.get('/designation/active/list',[checkUserAuth],  DesignationController.ge
 router.post('/job/candidates/add', [checkUserAuth], JobCandidatesController.addJobCandidate)
 router.get('/job/candidates/list', [checkUserAuth], JobCandidatesController.getAllJobCandidates)//all candidates
 router.get('/job/candidates/job/list', [checkUserAuth], JobCandidatesController.getAllJobCandidatesByJob) //candidates by job id
+router.get('/job/candidates/job/short-list/list', [checkUserAuth], JobCandidatesController.getAllShortListJobCandidates) //candidates by job id
+
 //router.post('/job/candidate/status/update', [checkUserAuth], JobCandidatesController.updateJobCandidateStatus)
 //router.get('/job/candidate/mail/send', [checkUserAuth], JobCandidatesController.sendMailToCandidate) //send mail to candidate by candidate id
 router.get('/job/candidate/shortlisted/list', [checkUserAuth], JobCandidatesController.getAllShortlistedCandidates)

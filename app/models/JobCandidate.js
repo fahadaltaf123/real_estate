@@ -59,6 +59,12 @@ const JobCandidate = sequelize.define("job_candidates", {
         allowNull: true,
         notEmpty: true,
     },
+    isShortListed: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        notEmpty: true,
+        default: 0,
+    },
     coverLetter: {
         type: DataTypes.TEXT,
         allowNull: true,

@@ -114,6 +114,24 @@ class JobCandidatesController {
         }
     }
 
+    static getAllShortListJobCandidates = async (req, res) => {
+        const allJobs = await JobCandidate.findAll({where : {isShortListed : '1'}});
+
+        if (allJobs !== null) {
+            res.status(200).send({
+                "status": "success",
+                "message": "All Short Listed job candidates successfully listed",
+                "job_candidates": allJobs
+            })
+        } else {
+            res.status(200).send({
+                "status": "success",
+                "message": "No Short Listed Job Candidate present",
+                "job_candidates": []
+            })
+        }
+    }
+
     static getAllJobCandidatesByJob = async (req, res) => {
         const allJobs = await JobCandidate.findAll({
             where: { jobId: req.query.jobId }, order: [
@@ -226,10 +244,18 @@ class JobCandidatesController {
 
         if (candId && jobId && status) {
             try {
+                
                 await JobCandidate.update(
                     { status: (status) },
                     { where: { id: candId,jobId: jobId } }
                 );
+
+                if(status == 'Short Listed'){
+                    await JobCandidate.update(
+                        { isShortListed: 1 },
+                        { where: { id: candId,jobId: jobId } }
+                    );
+                }
 
                 res.status(200).send({
                     "status": "success",
