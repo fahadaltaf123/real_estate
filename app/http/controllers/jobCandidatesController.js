@@ -260,7 +260,7 @@ class JobCandidatesController {
     {
         const {candId, jobId, status , offerSalary} = req.body
 
-        if (candId && jobId && status) {
+        if (candId && status) {
             try {
                 
                 await JobCandidate.update(
