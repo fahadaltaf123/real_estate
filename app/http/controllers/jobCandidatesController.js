@@ -8,6 +8,7 @@ import fs from 'fs';
 import CustomErrorHandler from "../../services/CustomErrorHandler.js"
 import mailer from "nodemailer"
 import CandidateStatus from "../../services/CandidateStatus.js"
+import Department from "../../models/Department.js";
 
 dotenv.config()
 
@@ -97,7 +98,7 @@ class JobCandidatesController {
     }
 
     static getAllJobCandidates = async (req, res) => {
-        const allJobs = await JobCandidate.findAll({ include: 'jobs'});
+        const allJobs = await JobCandidate.findAll({include : { as: 'jobs' ,model: Job , include: { as : 'department1' ,model:Department} } });
 
         if (allJobs !== null) {
             res.status(200).send({
@@ -115,7 +116,7 @@ class JobCandidatesController {
     }
 
     static getAllShortListJobCandidates = async (req, res) => {
-        const allJobs = await JobCandidate.findAll({where : {isShortListed : '1'} ,  include: 'jobs'});
+        const allJobs = await JobCandidate.findAll({where : {isShortListed : '1'} , include : { as: 'jobs' ,model: Job , include: { as : 'department1' ,model:Department} } });
 
         if (allJobs !== null) {
             res.status(200).send({

@@ -110,7 +110,7 @@ class JobController {
     static getAllJobs = async (req, res) => {
         const allJobs = await Job.findAll({order: [
             ['id', 'DESC']
-        ]});
+        ] });
 
         let jobs = [];
 

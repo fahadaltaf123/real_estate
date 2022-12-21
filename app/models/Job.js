@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 import sequelize from "../../config/connectdb.js"
 import JobCandidate from './JobCandidate.js';
+import Department from './Department.js';
 
 const Job = sequelize.define("jobs", {
     jobtitle: {
@@ -86,6 +87,8 @@ sequelize.sync().then(() => {
      Job.associate = function(models) {
         Job.hasMany(JobCandidate , {as: 'JobCandidate'})
      };
+
+     Job.belongsTo(Department, {foreignKey: 'department' , as: 'department1'})
     console.log('Job table created successfully!');
 }).catch((error) => {
     console.error('Unable to create table : ', error);

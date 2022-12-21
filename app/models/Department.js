@@ -2,6 +2,7 @@ import {Sequelize,DataTypes} from 'sequelize';
 import dotenv from 'dotenv'
 dotenv.config()
 import sequelize from "../../config/connectdb.js"
+import Job from './Job.js';
 
 const Department = sequelize.define("departments", {
     title: {
@@ -20,6 +21,10 @@ const Department = sequelize.define("departments", {
         notEmpty: true,
     }
  });
+
+ Department.associate = function(models) {
+    Department.hasMany(Job , {as: 'Job'})
+ };
 
 sequelize.sync().then(() => {
     console.log('Department table created successfully!');
