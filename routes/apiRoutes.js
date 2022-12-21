@@ -19,6 +19,8 @@ router.get('/job/details/:id',  JobController.getJobDetailsById)
 
 //Job Routes
 router.post('/job/add', [checkUserAuth], JobController.addJob)
+router.post('/job/update', [checkUserAuth], JobController.updateJob)
+
 router.get('/job/list',[checkUserAuth],  JobController.getAllJobs)
 router.get('/job/:id',[checkUserAuth],  JobController.getJobById)
 router.post('/job/status/update',[checkUserAuth],  JobController.updateJobStatus)

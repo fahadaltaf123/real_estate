@@ -265,30 +265,30 @@ class JobCandidatesController {
                 
                 await JobCandidate.update(
                     { status: (status) },
-                    { where: { id: candId,jobId: jobId } }
+                    { where: { id: candId } }
                 );
 
                 if(status == 'Short Listed'){
                     await JobCandidate.update(
                         { isShortListed: 1 },
-                        { where: { id: candId,jobId: jobId } }
+                        { where: { id: candId} }
                     );
                 }else if(status == 'Offer Sent'){
                     await JobCandidate.update(
                         { isOffered: 1 , offerStatus : 1 , offerSalary:offerSalary },
-                        { where: { id: candId,jobId: jobId } }
+                        { where: { id: candId } }
                     );
                 }
                 else if(status == 'Offer Accepted'){
                     await JobCandidate.update(
                         { isOffered: 1 , offerStatus : 2 },
-                        { where: { id: candId,jobId: jobId } }
+                        { where: { id: candId } }
                     );
                 }
                 else if(status == 'Offer Rejected'){
                     await JobCandidate.update(
                         { isOffered: 1 , offerStatus : 0 },
-                        { where: { id: candId,jobId: jobId } }
+                        { where: { id: candId } }
                     );
                 }
 

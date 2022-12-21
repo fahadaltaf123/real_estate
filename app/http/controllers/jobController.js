@@ -60,6 +60,53 @@ class JobController {
         }
     }
 
+    static updateJob = async (req, res) =>{
+        const {id,isActive,jobtitle, department,vacancies, location, applicants, experience, age, salaryFrom, salaryTo, jobtype, status, startdate, expirydate, description} = req.body
+       
+        if (jobtitle && department && location && vacancies && experience && age && salaryFrom && salaryTo && jobtype && status && startdate && expirydate && description) {
+            try {
+                const date1 = new Date(startdate).toISOString();
+                const date2 = new Date(expirydate).toISOString();
+                 Job.update({
+                    jobtitle: jobtitle,
+                    department: department,
+                    location: location,
+                    vacancies: vacancies,
+                    experience: experience,
+                    age: age,
+                    salaryFrom: salaryFrom,
+                    salaryTo: salaryTo,
+                    jobtype: jobtype,
+                    status: status,
+                    isActive: isActive==0?0:1,
+                    startdate: date1,
+                    expirydate: date2,
+                    description: description,
+                }, { where: { id: id } })
+                .then(result =>
+                    res.status(200).send({
+                        "status": "success",
+                        "message": "Update Job successfully"
+                    })
+                )
+           
+
+                
+            } catch (error) {
+                console.log(error);
+                res.status(400).send({
+                    "status": "failed",
+                    "message": "Unable to Update Job",
+                })
+            }
+        }else{
+            res.status(400).send({
+                "status": "failed",
+                "message": "All fields are required"
+            })
+        }
+    }
+
     static getAllJobs = async (req, res) => {
         const allJobs = await Job.findAll({order: [
             ['id', 'DESC']
