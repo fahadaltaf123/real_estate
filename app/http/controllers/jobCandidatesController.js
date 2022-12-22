@@ -97,6 +97,105 @@ class JobCandidatesController {
         }
     }
 
+    static updateJobCandidate = async (req, res) => {
+        const {id, jobId, firstName, lastName, email, phone, experience, age, currentSalary, expectedSalary, coverLetter, resume } = req.body;
+        if (id,jobId && firstName && lastName && email && phone && experience && currentSalary && expectedSalary && coverLetter && resume) {
+            try {
+                const jobObj = await Job.findOne({ where: { id: jobId, isActive: 1 } });
+                const jobCan = await JobCandidate.findOne({ where: { id: id } });
+                let tem_resume = null;
+                if (!jobObj) {
+                    res.status(404).send({
+                        "status": "success",
+                        "message": "Invalid Job"
+                    })
+                    return;
+                }
+
+                
+                if(jobCan.resume != resume){
+                    let base64String = resume;
+
+                    // Remove header
+                    let base64File = base64String.split(';base64,').pop();
+                    const type = base64String.split(';')[0].split('/')[1];
+    
+                    let fileName = Math.floor(Date.now() / 1000);
+    
+                    let filePath = 'uploads/' + fileName + '.' + type;
+                    fs.writeFile(filePath, base64File, { encoding: 'base64' }, function (err) {
+                        console.log('File created');
+                    });
+
+                }else{
+
+                }
+                
+
+                const createJob = new JobCandidate({
+                    jobId: jobId,
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    phone: phone,
+                    experience: experience,
+                    age: age,
+                    status: "New",
+                    currentSalary: currentSalary,
+                    expectedSalary: expectedSalary,
+                    coverLetter: coverLetter,
+                    resume: (fileName + '.' + type) //base 64
+                })
+
+                JobCandidate.update({
+                    jobId: jobId,
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    phone: phone,
+                    experience: experience,
+                    age: age,
+                    currentSalary: currentSalary,
+                    expectedSalary: expectedSalary,
+                    coverLetter: coverLetter,
+                    resume: (fileName + '.' + type) //base 64
+                }, { where: { id: id } })
+                .then(result =>
+                    res.status(200).send({
+                        "status": "success",
+                        "message": "Update Job Canidate successfully"
+                    })
+                )
+
+                await createJob.save();
+
+                await Job.update(
+                    { applicants: (jobObj.applicants + 1) },
+                    { where: { id: jobId } }
+                )
+                // Job.updateAttributes({
+                //     applicants: (jobObj.applicants+1)
+                // });
+
+                res.status(200).send({
+                    "status": "success",
+                    "message": "Job applied successfully"
+                })
+            } catch (error) {
+                console.log(error);
+                res.status(400).send({
+                    "status": "failed",
+                    "message": "Unable to apply job",
+                })
+            }
+        } else {
+            res.status(400).send({
+                "status": "failed",
+                "message": "All fields are required"
+            })
+        }
+    }
+
     static getAllJobCandidates = async (req, res) => {
         const allJobs = await JobCandidate.findAll({include : { as: 'jobs' ,model: Job , include: { as : 'department1' ,model:Department} } });
 

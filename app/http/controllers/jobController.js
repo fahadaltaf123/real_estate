@@ -60,6 +60,34 @@ class JobController {
         }
     }
 
+    static deleteJob = async (req, res) =>{
+        const {id} = req.body
+        if (id) {
+            try {
+                Job.destroy({
+                    where: {
+                       id: id
+                    }
+                })
+                res.status(200).send({
+                    "status": "success",
+                    "message": "Job Deletd successfully"
+                })
+            } catch (error) {
+                console.log(error);
+                res.status(400).send({
+                    "status": "failed",
+                    "message": "Unable to Deletd Job",
+                })
+            }
+        }else{
+            res.status(400).send({
+                "status": "failed",
+                "message": "All fields are required"
+            })
+        }
+    }
+
     static updateJob = async (req, res) =>{
         const {id,isActive,jobtitle, department,vacancies, location, applicants, experience, age, salaryFrom, salaryTo, jobtype, status, startdate, expirydate, description} = req.body
        
