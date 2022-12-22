@@ -104,6 +104,7 @@ class JobCandidatesController {
                 const jobObj = await Job.findOne({ where: { id: jobId, isActive: 1 } });
                 const jobCan = await JobCandidate.findOne({ where: { id: id } });
                 let tem_resume = null;
+                let jobIdChange = false;
                 if (!jobObj) {
                     res.status(404).send({
                         "status": "success",
@@ -111,7 +112,8 @@ class JobCandidatesController {
                     })
                     return;
                 }
-
+                
+                if(jobCan.jobId != jobId) jobIdChange = true
                 
                 if(jobCan.resume != resume){
                     let base64String = resume;
@@ -127,25 +129,12 @@ class JobCandidatesController {
                         console.log('File created');
                     });
 
-                }else{
+                    tem_resume = (fileName + '.' + type)
 
+                }else{
+                    tem_resume = resume
                 }
                 
-
-                const createJob = new JobCandidate({
-                    jobId: jobId,
-                    firstName: firstName,
-                    lastName: lastName,
-                    email: email,
-                    phone: phone,
-                    experience: experience,
-                    age: age,
-                    status: "New",
-                    currentSalary: currentSalary,
-                    expectedSalary: expectedSalary,
-                    coverLetter: coverLetter,
-                    resume: (fileName + '.' + type) //base 64
-                })
 
                 JobCandidate.update({
                     jobId: jobId,
@@ -158,29 +147,23 @@ class JobCandidatesController {
                     currentSalary: currentSalary,
                     expectedSalary: expectedSalary,
                     coverLetter: coverLetter,
-                    resume: (fileName + '.' + type) //base 64
+                    resume: tem_resume //base 64
                 }, { where: { id: id } })
-                .then(result =>
+                .then(result =>{
+                    if(jobIdChange){
+                         Job.update(
+                            { applicants: (jobObj.applicants - 1) },
+                            { where: { id: jobId } }
+                        )
+                    }
                     res.status(200).send({
                         "status": "success",
                         "message": "Update Job Canidate successfully"
                     })
-                )
-
-                await createJob.save();
-
-                await Job.update(
-                    { applicants: (jobObj.applicants + 1) },
-                    { where: { id: jobId } }
-                )
-                // Job.updateAttributes({
-                //     applicants: (jobObj.applicants+1)
-                // });
-
-                res.status(200).send({
-                    "status": "success",
-                    "message": "Job applied successfully"
                 })
+
+                
+                
             } catch (error) {
                 console.log(error);
                 res.status(400).send({
@@ -195,6 +178,43 @@ class JobCandidatesController {
             })
         }
     }
+
+
+    static deleteJobCandidate = async (req, res) =>{
+        const {id ,jobId } = req.body
+        if (id) {
+            try {
+                const jobObj = await Job.findOne({ where: { id: jobId } });
+
+                JobCandidate.destroy({
+                    where: {
+                       id: id
+                    }
+                })
+
+                await Job.update(
+                    { applicants: (jobObj.applicants - 1) },
+                    { where: { id: jobId } }
+                )
+                res.status(200).send({
+                    "status": "success",
+                    "message": "Job Canididate Deletd successfully"
+                })
+            } catch (error) {
+                console.log(error);
+                res.status(400).send({
+                    "status": "failed",
+                    "message": "Unable to Deletd Job Canididate",
+                })
+            }
+        }else{
+            res.status(400).send({
+                "status": "failed",
+                "message": "All fields are required"
+            })
+        }
+    }
+
 
     static getAllJobCandidates = async (req, res) => {
         const allJobs = await JobCandidate.findAll({include : { as: 'jobs' ,model: Job , include: { as : 'department1' ,model:Department} } });

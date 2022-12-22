@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import User from "../../models/User.js";
 import Department from "../../models/Department.js";
 import CustomErrorHandler from "../../services/CustomErrorHandler.js"
+import JobCandidate from "../../models/JobCandidate.js";
 dotenv.config()
 
 async function getDepartmentTitleById(id) {
@@ -64,6 +65,12 @@ class JobController {
         const {id} = req.body
         if (id) {
             try {
+
+                JobCandidate.destroy({
+                    where:{
+                        jobId :  id
+                    }
+                })
                 Job.destroy({
                     where: {
                        id: id
