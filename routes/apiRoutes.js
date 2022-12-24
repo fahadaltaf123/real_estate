@@ -18,6 +18,8 @@ router.get('/job/details/:id',  JobController.getJobDetailsById)
 //protected routes
 
 //Job Routes
+router.get('/job/dashboard', [checkUserAuth], JobController.jobDashboard)
+
 router.post('/job/add', [checkUserAuth], JobController.addJob)
 router.post('/job/delete', [checkUserAuth], JobController.deleteJob)
 

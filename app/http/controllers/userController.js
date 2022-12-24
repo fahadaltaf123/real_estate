@@ -6,7 +6,7 @@ dotenv.config()
 
 class UserController {
     static Register = async (req, res) => {
-        const { name, email, password, password_confirm } = req.body
+        const { name, email, password, password_confirm , role } = req.body
         const user = await User.findOne({where: {email:email}})
         if (user) {
             res.status(409).send({
@@ -14,7 +14,7 @@ class UserController {
                 "message": "Email already exists",
             })
         } else {
-            if (name && email && password && password_confirm) {
+            if (name && email && password && password_confirm && role) {
                 if (password === password_confirm) {
                     try {
                         const salt = await bcrypt.genSalt(10);
@@ -22,6 +22,7 @@ class UserController {
                         const createUser = new User({
                             name: name,
                             email: email,
+                            role: role,
                             password: hashPassword,
                         })
                         await createUser.save();

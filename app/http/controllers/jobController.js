@@ -61,6 +61,47 @@ class JobController {
         }
     }
 
+    static jobDashboard = async (req, res) =>{
+       
+            try {
+                const jobs = await Job.findAll({
+                    limit: 5,
+                   
+                });
+                const totalJobCanidate =await JobCandidate.findAndCountAll();
+                const totalJob =await Job.findAndCountAll();
+
+
+               
+
+                const JobCanidate = await JobCandidate.findAll({include : { as: 'jobs' ,model: Job , include: { as : 'department1' ,model:Department} } , limit: 3 });
+
+
+                const shortListCanidates = await JobCandidate.findAll({where : {isShortListed : '1'} , include : { as: 'jobs' ,model: Job , include: { as : 'department1' ,model:Department} } ,  limit: 3
+                         });
+                
+
+
+                res.status(200).send({
+                    "status": "success",
+                    "message": "Get Data successfully",
+                    "shortListCanidates" : shortListCanidates,
+                    "JobCanidate": JobCanidate,
+                    "totalJobCanidate" : totalJobCanidate,
+                    "jobs" : jobs,
+                    "totalJob" : totalJob
+
+                })
+            } catch (error) {
+                console.log(error);
+                res.status(400).send({
+                    "status": "failed",
+                    "message": "Unable to Get Job Dashboard Data",
+                })
+            }
+
+    }
+
     static deleteJob = async (req, res) =>{
         const {id} = req.body
         if (id) {
@@ -145,26 +186,26 @@ class JobController {
     static getAllJobs = async (req, res) => {
         const allJobs = await Job.findAll({order: [
             ['id', 'DESC']
-        ] });
+        ] ,include: 'department1' });
 
-        let jobs = [];
+        // let jobs = [];
 
-        for (let element of allJobs) {
-            element.applicants = element.applicants + ' Candidates';
-            element.jobtype = element.jobtype.replace(/([A-Z])/g, ' $1')
-            // uppercase the first character
-                .replace(/^./, function(str){ return str.toUpperCase(); });
+        // for (let element of allJobs) {
+        //     element.applicants = element.applicants + ' Candidates';
+        //     element.jobtype = element.jobtype.replace(/([A-Z])/g, ' $1')
+        //     // uppercase the first character
+        //         .replace(/^./, function(str){ return str.toUpperCase(); });
 
-            element.department = await getDepartmentTitleById(element.department);
+        //     element.department = await getDepartmentTitleById(element.department);
 
-            jobs.push(element);
-        }
+        //     jobs.push(element);
+        // }
 
         if(allJobs !== null) {
             res.status(200).send({
                 "status": "success",
                 "message": "Get all jobs successfully",
-                "jobs": jobs
+                "jobs": allJobs
             })
         } else {
             res.status(200).send({
@@ -180,24 +221,24 @@ class JobController {
         //const allJobs = await JobCandidate.findAll({where: {isActive: 1} });
         const allJobs = await Job.findAll({where: {isActive: 1} });
 
-        let jobs = [];
+        // let jobs = [];
 
-        for (let element of allJobs) {
+        // for (let element of allJobs) {
 
-            element.jobtype = element.jobtype.replace(/([A-Z])/g, ' $1')
-            // uppercase the first character
-                .replace(/^./, function(str){ return str.toUpperCase(); });
+        //     element.jobtype = element.jobtype.replace(/([A-Z])/g, ' $1')
+        //     // uppercase the first character
+        //         .replace(/^./, function(str){ return str.toUpperCase(); });
 
-            element.department = await getDepartmentTitleById(element.department);
+        //     element.department = await getDepartmentTitleById(element.department);
 
-            jobs.push(element);
-        }
+        //     jobs.push(element);
+        // }
 
         if(allJobs !== null) {
             res.status(200).send({
                 "status": "success",
                 "message": "Get all jobs successfully",
-                "jobs": jobs
+                "jobs": allJobs
             })
         } else {
             res.status(200).send({

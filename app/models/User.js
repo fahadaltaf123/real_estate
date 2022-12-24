@@ -17,6 +17,10 @@ const User = sequelize.define("users", {
     email_verified_at: {
       type: DataTypes.DATE,
     },
+    role:{
+      type:DataTypes.STRING,
+      notEmpty:true,
+    },
     password: {
     type: DataTypes.STRING,
     notEmpty: true,
