@@ -7,9 +7,9 @@ import Department from "../../models/Department.js";
 dotenv.config()
 
 class DepartmentController {
-    static addDeparment = async (req, res) =>{
-        const {title, status, description} = req.body
-       console.log({title, status, description});
+    static addDeparment = async (req, res) => {
+        const { title, status, description } = req.body
+        console.log({ title, status, description });
         if (title && status && description) {
             try {
                 const createDepartment = new Department({
@@ -32,7 +32,7 @@ class DepartmentController {
                     "message": "Unable to Add Department",
                 })
             }
-        }else{
+        } else {
             res.status(400).send({
                 "status": "failed",
                 "message": "All fields are required"
@@ -43,11 +43,11 @@ class DepartmentController {
     static getAllDepartments = async (req, res) => {
         const allDepartments = await Department.findAll();
 
-        if(allDepartments !== null) {
+        if (allDepartments !== null) {
             res.status(200).send({
                 "status": "success",
                 "message": "Get all Departments successfully",
-                "departments":allDepartments
+                "departments": allDepartments
             })
         } else {
             res.status(200).send({
@@ -59,10 +59,10 @@ class DepartmentController {
     }
 
     static getAllActiveDepartments = async (req, res) => {
-        
-        const allDepartments = await Department.findAll({where: {status: 'open'} });
 
-        if(allDepartments !== null) {
+        const allDepartments = await Department.findAll({ where: { status: 'open' } });
+
+        if (allDepartments !== null) {
             res.status(200).send({
                 "status": "success",
                 "message": "Departments listed successfully",
@@ -74,6 +74,25 @@ class DepartmentController {
                 "message": "No Department present",
                 "jobs": []
             })
+        }
+    }
+
+    /////API
+    static getDepartmentById = async (req, res, next) => {
+        const depId = req.body.id
+        console.log(req.body)
+        console.log(req.params)
+        try {
+            const depById = await Department.findAll({ where: { id: depId } })
+            if (depById) {
+                res.status(200).send({
+                    "status": "success",
+                    "message": "get department successfully",
+                    "departments":depById
+                })
+             }
+        } catch (error) {
+            return next(error)
         }
     }
 }

@@ -123,4 +123,5 @@ sequelize.sync().then(() => {
     console.error('Unable to create table : ', error);
 });
 
+
 export default JobCandidate

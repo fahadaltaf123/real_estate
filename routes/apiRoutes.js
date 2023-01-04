@@ -6,6 +6,10 @@ import DepartmentController from "../app/http/controllers/departmentController.j
 import DesignationController from "../app/http/controllers/designationController.js"
 import EmployeeController from "../app/http/controllers/employeeController.js"
 import checkUserAuth from "../app/http/middlewares/authUser.js"
+import projectController from "../app/http/controllers/projectController.js";
+import User from "../app/models/User.js";
+import EmployeeActionController from "../app/http/controllers/employeeActionController.js";
+import CustomerController from "../app/http/controllers/customerController.js";
 
 const router = express.Router();
 
@@ -33,6 +37,7 @@ router.post('/job/status/update',[checkUserAuth],  JobController.updateJobStatus
 router.post('/department/add', [checkUserAuth], DepartmentController.addDeparment)
 router.get('/department/list',[checkUserAuth],  DepartmentController.getAllDepartments)
 router.get('/department/active/list',[checkUserAuth],  DepartmentController.getAllActiveDepartments)
+router.get('/department/active/id',[checkUserAuth],  DepartmentController.getDepartmentById)
 
 //Designation Routes
 router.post('/designation/add', [checkUserAuth], DesignationController.addDesignation)
@@ -55,6 +60,27 @@ router.post('/job/candidates/status/update', JobCandidatesController.updateStatu
 router.post('/job/candidates/status/called/update', JobCandidatesController.updateStatusCalledCandidates)//update candidate status by candidate id
 
 //Employee Routes
-router.post('/employee/add', [checkUserAuth], EmployeeController.addEmployee)
+router.post('/employee/add', [checkUserAuth], EmployeeController.addEmployee)//ADD NEW EMPLOYEES TO DATABASE
+router.get('/employee/id/list', [checkUserAuth], EmployeeController.getEmployeeById)//Search Employee by ID
+router.get('/employee/list', [checkUserAuth], EmployeeController.getAllEmployee)//Get the list of all employees
+router.post('/employee/delete', [checkUserAuth], EmployeeController.deleteEmployee)//Search employee by id and delete
+router.post('/employee/update', [checkUserAuth], EmployeeController.updateEmployee)//Search employee by id and update
+
+//EmployeeAction Routes
+router.post('/employeeAction/add', [checkUserAuth], EmployeeActionController.addAction)// Add Action Against Employee
+
+//Customer Routes
+router.post('/customer/add', [checkUserAuth], CustomerController.addCustomer)//ADD NEW  Customer TO DATABASE
+router.get('/customer/id/list', [checkUserAuth],CustomerController.getCustomerById)//Search Customer by ID
+router.get('/customer/list', [checkUserAuth],CustomerController.getAllCustomer)//Get the list of all  Customer
+router.post('/customer/delete', [checkUserAuth],CustomerController.deleteCustomer)//Search Customer by id and delete
+router.post('/customer/update', [checkUserAuth],CustomerController.updateCustomer)//Search Customer by id and update
+
+//Project Routes
+router.post('/project/add', [checkUserAuth], projectController.addproject)//Create and Add new project
+router.get('/project/id/list', [checkUserAuth], projectController.getProjectById)//Search project by project ID
+router.get('/project/list',[checkUserAuth],projectController.getAllProjects)//Get the list of all available Projects
+router.post('/project/update',[checkUserAuth],projectController.updateProject)//Search project by Id and update
+router.post('/project/delete',[checkUserAuth],projectController.deleteProject)//Search Project by Id and delete
 
 export default router

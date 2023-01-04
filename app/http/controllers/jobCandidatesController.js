@@ -217,7 +217,7 @@ class JobCandidatesController {
 
 
     static getAllJobCandidates = async (req, res) => {
-        const allJobs = await JobCandidate.findAll({include : { as: 'jobs' ,model: Job , include: { as : 'department1' ,model:Department} } });
+        const allJobs = await JobCandidate.findAll({include : { as: 'jobs' ,model: Job , include: { as : 'department1' ,model:Department} } } );
 
         if (allJobs !== null) {
             res.status(200).send({
