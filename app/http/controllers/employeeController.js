@@ -60,7 +60,7 @@ class EmployeeController {
     // Search Employee by Id
     static getEmployeeById = async (req, res, next) => {
         const empId = req.body.id
-        console.log(req.body)
+        console.log("ssssssssssssss",req.body)
         console.log(req.params)
         try {
             const empById = await Employee.findAll({ where: { id: empId } })
