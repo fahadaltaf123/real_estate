@@ -21,10 +21,10 @@ const EmployeeAction = sequelize.define("employee_action", {
         type:DataTypes.INTEGER,
         allowNull: false,
         notEmpty: true,
-        references: {
-            model: 'employees',
-            key: 'id'
-        }
+        // references: {
+        //     model: 'employees',
+        //     key: 'id'
+        // }
     }
 });
 

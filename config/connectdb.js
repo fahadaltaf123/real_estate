@@ -20,6 +20,20 @@ const sequelize = new Sequelize(
     process.env.DB_PORT
     );
 
+    // const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME, 
+    //     process.env.DB_PASSWORD, {
+    //     host: "localhost",
+    //     // port: "49394",  // <----------------The port number you copied
+    //     dialect: "mssql",
+    //     operatorsAliases: false,
+    //     pool: {
+    //     max: 5,
+    //     min: 0,
+    //     acquire: 30000,
+    //     idle: 10000
+    //     }
+    // });
+
 // connectDB.connect (function(error){
 //     if(error){
 //         throw error;

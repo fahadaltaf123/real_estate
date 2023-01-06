@@ -107,10 +107,10 @@ const Employee = sequelize.define("employees", {
         type:DataTypes.INTEGER,
         allowNull: false,
         notEmpty: true,
-        references: {
-            model: 'projects',
-            key: 'id'
-        }
+        // references: {
+        //     model: 'projects',
+        //     key: 'id'
+        // }
     }
 
 
