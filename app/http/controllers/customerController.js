@@ -57,7 +57,7 @@ class CustomerController {
                 res.status(200).send({
                     "status": "success",
                     "message": "get Customer successfully",
-                    "project": custById
+                    "Customer": custById
                 })
             } else {
                 res.status(200).send({
@@ -77,7 +77,7 @@ class CustomerController {
             res.status(200).send({
                 "status": "success",
                 "message": "Get all Customer successfully",
-                "project": allCustomer
+                "Customer": allCustomer
             })
         } else {
             res.status(200).send({

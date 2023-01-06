@@ -247,13 +247,14 @@ class JobController {
     }
 
     static getJobById = async (req, res, next) =>{
-        const jobId = req.params.id
+        const jobId = req.body.id
         try {
             const jobById = await Job.findAll({where:{id:jobId}})
             if(jobById){
                 res.status(200).send({
                     "status": "success",
-                    "message": "get Job successfully"
+                    "message": "get Job successfully",
+                    "Jobs":jobById
                 })
             }
         } catch (error) {

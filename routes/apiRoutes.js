@@ -10,6 +10,9 @@ import projectController from "../app/http/controllers/projectController.js";
 import User from "../app/models/User.js";
 import EmployeeActionController from "../app/http/controllers/employeeActionController.js";
 import CustomerController from "../app/http/controllers/customerController.js";
+import AssetController from "../app/http/controllers/assetController.js";
+import EmployeeAssetController from "../app/http/controllers/employeeAssetController.js";
+
 
 const router = express.Router();
 
@@ -82,5 +85,16 @@ router.get('/project/id/list', [checkUserAuth], projectController.getProjectById
 router.get('/project/list',[checkUserAuth],projectController.getAllProjects)//Get the list of all available Projects
 router.post('/project/update',[checkUserAuth],projectController.updateProject)//Search project by Id and update
 router.post('/project/delete',[checkUserAuth],projectController.deleteProject)//Search Project by Id and delete
+
+// Assets Routes
+router.post('/asset/add', [checkUserAuth], AssetController.addAsset)//Create and Add new project
+router.get('/asset/id/list', [checkUserAuth], AssetController.getAssetById)//Search project by project ID
+router.get('/asset/list',[checkUserAuth],AssetController.getAllAsset)//Get the list of all available Projects
+router.post('/asset/update',[checkUserAuth],AssetController.updateAsset)//Search project by Id and update
+router.delete('/asset/delete',[checkUserAuth],AssetController.deleteAsset)//Search Project by Id and delete
+
+// Employee Assets Routes
+
+router.post('/employee/asset',[checkUserAuth],EmployeeAssetController.addEmployeeAsset)//Add Employee Assets in Database
 
 export default router
