@@ -60,7 +60,7 @@ class DepartmentController {
 
     static getAllActiveDepartments = async (req, res) => {
 
-        const allDepartments = await Department.findAll({ where: { status: 'open' } });
+        const allDepartments = await Department.findAll({ where: { status: 'active' } });
 
         if (allDepartments !== null) {
             res.status(200).send({

@@ -1,4 +1,4 @@
-import {Sequelize,DataTypes} from 'sequelize';
+import { Sequelize, DataTypes } from 'sequelize';
 import dotenv from 'dotenv'
 dotenv.config()
 import sequelize from "../../config/connectdb.js"
@@ -17,8 +17,23 @@ const Customer = sequelize.define("customer", {
         allowNull: true,
         notEmpty: true,
     },
+    companyName: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        notEmpty: true,
+    },
     dob: {
         type: DataTypes.DATEONLY,
+        allowNull: true,
+        notEmpty: true,
+    },
+    customerId: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        notEmpty: true,
+    },
+    gender: {
+        type: Sequelize.ENUM('Male', 'Female'),
         allowNull: true,
         notEmpty: true,
     },
@@ -42,14 +57,14 @@ const Customer = sequelize.define("customer", {
         allowNull: true,
         notEmpty: true,
     },
-    
+
     designation: {
         type: DataTypes.STRING,
         allowNull: true,
         notEmpty: true,
     },
-    
- 
+
+
     emergencyContactNumber: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -60,11 +75,11 @@ const Customer = sequelize.define("customer", {
         allowNull: true,
         notEmpty: true,
     },
-    
 
 
- });
- 
+
+});
+
 sequelize.sync().then(() => {
     // Customer.belongsTo(Project, {foreignKey: 'projectId' , as: 'project'})
     console.log('Customer table created successfully!');

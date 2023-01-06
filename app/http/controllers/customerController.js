@@ -6,28 +6,34 @@ dotenv.config()
 
 class CustomerController {
     static addCustomer = async (req, res, next) => {
-        const { fullName, fatherName, dob, cnic, contact, email, address, designation, emergencyContactNumber, emergencyContactAddress } = req.body
-        console.log({ fullName, fatherName, dob, cnic, contact, email, address,  designation, emergencyContactNumber, emergencyContactAddress });
-        if (fullName && fatherName && dob && cnic && email && address && designation && emergencyContactNumber && emergencyContactAddress) {
+        const { fullName, gender, fatherName, dob, cnic, contact, email, address, customerId, designation, companyName, emergencyContactNumber, emergencyContactAddress } = req.body
+
+        console.log({ fullName, fatherName, dob, cnic, contact, email, address, designation, companyName, emergencyContactNumber, emergencyContactAddress });
+
+
+        if (fullName && fatherName && dob && cnic && email && designation && companyName) {
             try {
                 const createCustomer = new Customer({
                     fullName: fullName,
                     fatherName: fatherName,
+                    companyName: companyName,
+                    customerId: customerId,
                     dob: dob,
                     cnic: cnic,
                     contact: contact,
                     email: email,
+                    gender: gender,
                     address: address,
                     designation: designation,
                     emergencyContactNumber: emergencyContactNumber,
-                    emergencyContactAddress:emergencyContactAddress
+                    emergencyContactAddress: emergencyContactAddress
 
                 })
 
-                await createCustomer.save();
+                const result = await createCustomer.save();
 
                 res.status(200).send({
-                    "status": "success",
+                    "status": 200,
                     "message": "Add Customer successfully"
                 });
 
@@ -48,20 +54,22 @@ class CustomerController {
 
     // Search Customer by Id
     static getCustomerById = async (req, res, next) => {
-        const custId = req.body.id
-        console.log(req.body)
+        // const custId = req.body.id
+        const custId = req.query.id
         console.log(req.params)
         try {
             const custById = await Customer.findAll({ where: { id: custId } })
-            if (custById) {
+            if (custById.length >= 1) {
                 res.status(200).send({
-                    "status": "success",
+                    "status": 200,
                     "message": "get Customer successfully",
-                    "Customer": custById
+
+                    "customers": custById
+
                 })
             } else {
-                res.status(200).send({
-                    "status": "success",
+                res.status(400).send({
+                    "status": 400,
                     "message": "No CustomerFound against id"
                 })
             }
@@ -77,7 +85,9 @@ class CustomerController {
             res.status(200).send({
                 "status": "success",
                 "message": "Get all Customer successfully",
-                "Customer": allCustomer
+
+                "customers": allCustomer
+
             })
         } else {
             res.status(200).send({
@@ -90,8 +100,8 @@ class CustomerController {
     // Delete Customer
 
     static deleteCustomer = async (req, res) => {
-        const custId = req.body.id
-        console.log(req.body , "asdasdasdgfffffffffffffffffffff")
+        const custId = req.query.id
+        console.log(req.body, "asdasdasdgfffffffffffffffffffff")
         if (custId) {
             try {
                 const custById = await Customer.findAll({ where: { id: custId } })
@@ -103,7 +113,7 @@ class CustomerController {
                         }
                     })
                     res.status(200).send({
-                        "status": "success",
+                        "status": 200,
                         "message": "Customer Deletd successfully"
                     })
                 } else {
@@ -132,14 +142,14 @@ class CustomerController {
     // Update Customer
 
     static updateCustomer = async (req, res, next) => {
-        const { fullName, fatherName, dob, cnic, contact, email, maritalStatus, address, customerId, designation, department, branch, dateOfJoining, basicSalary, emergencyContactName, relationship, emergencyContactNumber, emergencyContactAddress, status, projectId } = req.body
+        const { fullName, fatherName, dob, cnic, contact,gender, email, maritalStatus, address, customerId, designation, department, branch, dateOfJoining, basicSalary, emergencyContactName, relationship, emergencyContactNumber, emergencyContactAddress, status, projectId } = req.body
         const custId = req.body.id
         try {
             const result = await Customer.findAll({ where: { id: custId } })
 
 
 
-            if (result.length>0) {
+            if (result.length > 0) {
 
                 const custById = await Customer.update({
                     fullName: fullName,
@@ -148,16 +158,17 @@ class CustomerController {
                     cnic: cnic,
                     contact: contact,
                     email: email,
+                    gender:gender,
                     address: address,
                     customerId: customerId,
                     designation: designation,
                     emergencyContactNumber: emergencyContactNumber,
-                    emergencyContactAddress:emergencyContactAddress
+                    emergencyContactAddress: emergencyContactAddress
 
                 }, { where: { id: custId } })
 
                 res.status(200).send({
-                    "status": "success",
+                    "status": 200,
                     "message": " Customer updated successfully",
                     "Customer": result
                 })

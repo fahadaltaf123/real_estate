@@ -76,7 +76,7 @@ router.post('/employeeAction/add', [checkUserAuth], EmployeeActionController.add
 router.post('/customer/add', [checkUserAuth], CustomerController.addCustomer)//ADD NEW  Customer TO DATABASE
 router.get('/customer/id/list', [checkUserAuth],CustomerController.getCustomerById)//Search Customer by ID
 router.get('/customer/list', [checkUserAuth],CustomerController.getAllCustomer)//Get the list of all  Customer
-router.post('/customer/delete', [checkUserAuth],CustomerController.deleteCustomer)//Search Customer by id and delete
+router.delete('/customer/delete', [checkUserAuth],CustomerController.deleteCustomer)//Search Customer by id and delete
 router.post('/customer/update', [checkUserAuth],CustomerController.updateCustomer)//Search Customer by id and update
 
 //Project Routes
