@@ -75,6 +75,16 @@ const Customer = sequelize.define("customer", {
         allowNull: true,
         notEmpty: true,
     },
+    projectId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        notEmpty: true,
+        // references: {
+        //     model: 'Project',
+        //     key: 'id'
+        // }
+    }
+
 
 
 
@@ -82,6 +92,8 @@ const Customer = sequelize.define("customer", {
 
 sequelize.sync().then(() => {
     // Customer.belongsTo(Project, {foreignKey: 'projectId' , as: 'project'})
+    Customer.belongsTo(Project, {foreignKey: 'projectId' , as: 'project'})
+    Customer.hasMany(CustomerAction , {as: 'CustomerAction'})
     console.log('Customer table created successfully!');
 }).catch((error) => {
     console.error('Unable to create table : ', error);

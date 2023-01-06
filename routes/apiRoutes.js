@@ -84,7 +84,7 @@ router.post('/project/add', [checkUserAuth], projectController.addproject)//Crea
 router.get('/project/id/list', [checkUserAuth], projectController.getProjectById)//Search project by project ID
 router.get('/project/list',[checkUserAuth],projectController.getAllProjects)//Get the list of all available Projects
 router.post('/project/update',[checkUserAuth],projectController.updateProject)//Search project by Id and update
-router.post('/project/delete',[checkUserAuth],projectController.deleteProject)//Search Project by Id and delete
+router.delete('/project/delete',[checkUserAuth],projectController.deleteProject)//Search Project by Id and delete
 
 // Assets Routes
 router.post('/asset/add', [checkUserAuth], AssetController.addAsset)//Create and Add new project

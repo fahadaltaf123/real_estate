@@ -6,7 +6,7 @@ dotenv.config()
 
 class CustomerController {
     static addCustomer = async (req, res, next) => {
-        const { fullName, gender, fatherName, dob, cnic, contact, email, address, customerId, designation, companyName, emergencyContactNumber, emergencyContactAddress } = req.body
+        const { fullName, gender, fatherName, dob, cnic, contact,projectId, email, address, customerId, designation, companyName, emergencyContactNumber, emergencyContactAddress } = req.body
 
         console.log({ fullName, fatherName, dob, cnic, contact, email, address, designation, companyName, emergencyContactNumber, emergencyContactAddress });
 
@@ -20,6 +20,7 @@ class CustomerController {
                     customerId: customerId,
                     dob: dob,
                     cnic: cnic,
+                    projectId:projectId,
                     contact: contact,
                     email: email,
                     gender: gender,
