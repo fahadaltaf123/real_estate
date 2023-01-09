@@ -48,7 +48,7 @@ const Employee = sequelize.define("employees", {
         notEmpty: true,
     },
     employeeId: {
-        primaryKey: true,
+        // primaryKey: true,
         type: DataTypes.STRING,
         allowNull: true,
         notEmpty: true,
