@@ -12,6 +12,8 @@ import EmployeeActionController from "../app/http/controllers/employeeActionCont
 import CustomerController from "../app/http/controllers/customerController.js";
 import AssetController from "../app/http/controllers/assetController.js";
 import EmployeeAssetController from "../app/http/controllers/employeeAssetController.js";
+import FileIssueController from "../app/http/controllers/fileIssueController.js";
+
 
 
 const router = express.Router();
@@ -97,4 +99,11 @@ router.delete('/asset/delete',[checkUserAuth],AssetController.deleteAsset)//Sear
 
 router.post('/employee/asset',[checkUserAuth],EmployeeAssetController.addEmployeeAsset)//Add Employee Assets in Database
 
-export default router
+// Files issues Routes 
+router.post('/file/add', [checkUserAuth],FileIssueController.addFile)//Create and Add new file
+router.get('/file/id/list', [checkUserAuth], FileIssueController.getFileById)//Search File by File ID
+router.get('/file/list',[checkUserAuth],FileIssueController.getAllFile)//Get the list of all available Files
+router.post('/file/update',[checkUserAuth],FileIssueController.updateFile)//Search Files by Id and update
+router.delete('/file/delete',[checkUserAuth],FileIssueController.deleteFile)//Search Fileby Id and delete
+
+export default router;

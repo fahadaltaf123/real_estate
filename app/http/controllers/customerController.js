@@ -6,9 +6,9 @@ dotenv.config()
 
 class CustomerController {
     static addCustomer = async (req, res, next) => {
-        const { fullName, gender, fatherName, dob, cnic, contact, email, address, customerId, designation, companyName, emergencyContactNumber, emergencyContactAddress } = req.body
+        const { fullName, gender, fatherName, dob, cnic, contact, email, address, customerId, designation, companyName, emergencyContactNumber, emergencyContactAddress ,projectId} = req.body
 
-        console.log({ fullName, fatherName, dob, cnic, contact, email, address, designation, companyName, emergencyContactNumber, emergencyContactAddress });
+        console.log({ fullName, fatherName, dob, cnic, contact, email, address, designation, companyName, emergencyContactNumber, emergencyContactAddress ,projectId });
 
 
         if (fullName && fatherName && dob && cnic && email && designation && companyName) {

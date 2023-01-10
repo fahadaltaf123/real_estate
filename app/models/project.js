@@ -54,11 +54,11 @@ Project.associate = function (models) {
 };
 
 sequelize.sync().then(() => {
-    Project.associate = function (models) {
-        Project.hasMany(Employee, { as: 'Employee' })
-        Project.hasOne(Customer, { as: 'Customer' })
+    // Project.associate = function (models) {
+    //     Project.hasMany(Employee, { as: 'Employee' })
+    //     Project.hasOne(Customer, { as: 'Customer' })
 
-    };
+    // };
 
     console.log('Project table created successfully!');
 }).catch((error) => {
