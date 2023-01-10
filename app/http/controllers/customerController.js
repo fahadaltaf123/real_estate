@@ -26,7 +26,8 @@ class CustomerController {
                     address: address,
                     designation: designation,
                     emergencyContactNumber: emergencyContactNumber,
-                    emergencyContactAddress: emergencyContactAddress
+                    emergencyContactAddress: emergencyContactAddress,
+                    projectId: projectId,
 
                 })
 

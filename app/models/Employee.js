@@ -1,10 +1,11 @@
-import {Sequelize,DataTypes} from 'sequelize';
+import { Sequelize, DataTypes } from 'sequelize';
 import dotenv from 'dotenv'
 dotenv.config()
 import sequelize from "../../config/connectdb.js"
 import project from './project.js';
 import Project from './project.js';
 import EmployeeAction from './EmployeeAction.js';
+import Designation from './Designation.js';
 
 const Employee = sequelize.define("employees", {
     fullName: {
@@ -103,8 +104,8 @@ const Employee = sequelize.define("employees", {
         allowNull: true,
         notEmpty: true,
     },
-    projectId:{
-        type:DataTypes.INTEGER,
+    projectId: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         notEmpty: true,
         // references: {
@@ -114,11 +115,13 @@ const Employee = sequelize.define("employees", {
     }
 
 
- });
- 
+});
+
 sequelize.sync().then(() => {
-    Employee.belongsTo(Project, {foreignKey: 'projectId' , as: 'project'})
-    Employee.hasMany(EmployeeAction , {as: 'EmployeeAction'})
+    Employee.belongsTo(Project, { foreignKey: 'projectId', as: 'project' })
+    Employee.belongsTo(Designation, { foreignKey: 'designation', as: 'designationAss' })
+
+    Employee.hasMany(EmployeeAction, { as: 'EmployeeAction' })
     console.log('Employee table created successfully!');
 }).catch((error) => {
     console.error('Unable to create table : ', error);
