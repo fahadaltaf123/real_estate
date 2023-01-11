@@ -100,7 +100,7 @@ router.delete('/asset/delete',[checkUserAuth],AssetController.deleteAsset)//Sear
 router.post('/employee/asset',[checkUserAuth],EmployeeAssetController.addEmployeeAsset)//Add Employee Assets in Database
 
 // Files issues Routes 
-router.post('/file/add', [checkUserAuth],FileIssueController.addFile)//Create and Add new file
+// router.post('/file/add', [checkUserAuth, files.array('image')],FileIssueController.addFile)//Create and Add new file
 router.get('/file/id/list', [checkUserAuth], FileIssueController.getFileById)//Search File by File ID
 router.get('/file/list',[checkUserAuth],FileIssueController.getAllFile)//Get the list of all available Files
 router.post('/file/update',[checkUserAuth],FileIssueController.updateFile)//Search Files by Id and update

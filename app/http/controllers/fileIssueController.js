@@ -2,10 +2,21 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import FileIssue from "../../models/FileIssue.js";
+import multer from 'multer'
+import fileUpload from 'express-fileupload';
+import { fileURLToPath } from 'url';
+
+
 dotenv.config()
 
 class FileIssueController {
+
     static addFile = async (req, res, next) => {
+        let filePath;
+        if(req.files){
+            filePath=req.files.path;
+        }
+        req.files
         const { type,location,size,value,projectId,CustomerId } = req.body
         console.log({ type,location,size,value,projectId,CustomerId });
         if (type && location && size && value && projectId && CustomerId) {
@@ -167,6 +178,10 @@ class FileIssueController {
             })
         }
     }
+    ///////////////////////////////////////////////////////////////
+
+
+    //////////////////////////////////////////////////////////////
 
 
 }

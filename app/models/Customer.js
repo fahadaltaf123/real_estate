@@ -2,11 +2,14 @@ import { Sequelize, DataTypes } from 'sequelize';
 import dotenv from 'dotenv'
 dotenv.config()
 import sequelize from "../../config/connectdb.js"
+import Project from './project.js';
+import Designation from './Designation.js';
 // import project from './project.js';
 // import Project from './project.js';
 
 
 const Customer = sequelize.define("customer", {
+
     fullName: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -83,16 +86,15 @@ const Customer = sequelize.define("customer", {
         //     model: 'Project',
         //     key: 'id'
         // }
-    }
-
-
+    },
+    
 
 
 });
 
 sequelize.sync().then(() => {
     // Customer.belongsTo(Project, {foreignKey: 'projectId' , as: 'project'})
-    // Customer.belongsTo(Project, {foreignKey: 'projectId' , as: 'project'})
+    Customer.belongsTo(Designation, {foreignKey: 'designation' , as: 'designationDetail'})
     // Customer.hasMany(CustomerAction, { as: 'CustomerAction' })
     console.log('Customer table created successfully!');
 }).catch((error) => {

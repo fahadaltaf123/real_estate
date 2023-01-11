@@ -43,12 +43,11 @@ class projectController {
     }
     // SEARCH PROJECT BY ID
     static getProjectById = async (req, res, next) => {
-        const prjId = req.body.id
-        console.log(req.body)
-        console.log(req.params)
+        const prjId = req.query.id
+        console.log(req.query)
         try {
             const prjById = await Project.findAll({ where: { id: prjId } })
-            if (prjById) {
+            if (prjById.length > 0) {
                 res.status(200).send({
                     "status": "success",
                     "message": "get project successfully",

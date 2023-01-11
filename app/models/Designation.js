@@ -22,6 +22,11 @@ const Designation = sequelize.define("designations", {
  });
 
 sequelize.sync().then(() => {
+    Designation.associate = function (models) {
+       
+       Designation.hasmany(Customer, { as: 'Customer' })
+
+    };
     console.log('Designation table created successfully!');
 }).catch((error) => {
     console.error('Unable to create table : ', error);
